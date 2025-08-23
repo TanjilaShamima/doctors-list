@@ -1,3 +1,4 @@
+import { TopNav } from "@/@components/layout/TopNav";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,15 +28,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 min-h-screen`}
       >
-        <div className="mx-auto max-w-7xl flex flex-col min-h-screen">
-          <header className="p-4 md:p-6 bg-white shadow-sm sticky top-0 z-10 flex items-center gap-4">
-            <h1 className="text-xl font-semibold tracking-tight">
-              Patient Dashboard
-            </h1>
-          </header>
-          <div className="flex-1 p-4 md:p-6">{children}</div>
+        <div className="mx-auto max-w-[1500px] flex flex-col min-h-screen px-3 md:px-6 py-3 gap-4">
+          <div className="sticky top-3 z-20">
+            <TopNav />
+          </div>
+          <div className="flex-1 pb-6">{children}</div>
           <footer className="p-4 text-center text-xs text-gray-500">
-            © {new Date().getFullYear()} Patient Records
+            © {new Date().getFullYear()} Tech.Care
           </footer>
         </div>
       </body>

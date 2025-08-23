@@ -1,9 +1,13 @@
-import { PatientChart } from "./PatientChart";
+import {
+  DiagnosisHistoryPoint,
+  fetchJessica,
+} from "@/@services/api/patientService";
 import { DiagnosticList } from "./components/DiagnosticList";
 import { KPICard } from "./components/KPICard";
 import { LabResultsPanel } from "./components/LabResultsPanel";
 import { PatientProfilePanel } from "./components/PatientProfilePanel";
 import { SidebarPatientList } from "./components/SidebarPatientList";
+import { PatientChart } from "./PatientChart";
 
 // Layout modeling the provided dashboard screenshot
 export default async function DashboardPage({
@@ -12,21 +16,19 @@ export default async function DashboardPage({
   patientId?: string;
 }) {
   // TODO: Derive these labels and datasets from real patient vitals history when API clarified
-  const labels = [
-    "Oct, 2023",
-    "Nov, 2023",
-    "Dec, 2023",
-    "Jan, 2024",
-    "Feb, 2024",
-    "Mar, 2024",
-  ];
+  const jessica = await fetchJessica();
+  const history: DiagnosisHistoryPoint[] =
+    (jessica?.diagnosis_history as DiagnosisHistoryPoint[]) || [];
+  const labels = history.map((h) => h.month).filter((m): m is string => !!m);
+  const systolic = history
+    .map((h) => h.systolic)
+    .filter((n): n is number => typeof n === "number");
+  const diastolic = history
+    .map((h) => h.diastolic)
+    .filter((n): n is number => typeof n === "number");
   const datasets = [
-    {
-      label: "Systolic",
-      data: [120, 110, 160, 140, 150, 160],
-      color: "#7E6CAB",
-    },
-    { label: "Diastolic", data: [80, 60, 90, 70, 60, 78], color: "#5B8DEF" },
+    { label: "Systolic", data: systolic, color: "#7E6CAB" },
+    { label: "Diastolic", data: diastolic, color: "#5B8DEF" },
   ];
 
   return (

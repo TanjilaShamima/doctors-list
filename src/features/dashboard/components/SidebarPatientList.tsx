@@ -1,9 +1,10 @@
-import { getPatients, Patient } from "@/@services/api/patientService";
+import { fetchAllPatients, Patient } from "@/@services/api/patientService";
+import Image from "next/image";
 
 export async function SidebarPatientList({ activeId }: { activeId?: string }) {
   let patients: Patient[] = [];
   try {
-    patients = await getPatients();
+    patients = await fetchAllPatients();
   } catch {
     return <div className="p-4 text-sm text-red-600">Failed to load.</div>;
   }
@@ -29,8 +30,13 @@ export async function SidebarPatientList({ activeId }: { activeId?: string }) {
               }`}
             >
               <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">
-                {p.first_name.charAt(0)}
-                {p.last_name.charAt(0)}
+                <Image
+                  src={p.profile_picture || ""}
+                  alt={`${p.first_name} ${p.last_name}`}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
               </div>
               <div className="flex flex-col flex-1 min-w-0">
                 <span className="font-medium truncate text-gray-800">

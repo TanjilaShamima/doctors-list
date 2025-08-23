@@ -31,7 +31,7 @@ export interface LineDatasetConfig {
 
 interface PatientChartProps {
   labels: string[];
-  datasets: LineDatasetConfig[];
+  datasets?: LineDatasetConfig[];
   heightClass?: string;
   minimal?: boolean;
 }
@@ -42,20 +42,18 @@ export function PatientChart({
   heightClass = "h-48 md:h-56",
   minimal,
 }: PatientChartProps) {
-  const data = {
-    labels,
-    datasets: datasets.map((d) => ({
-      label: d.label,
-      data: d.data,
-      borderColor: d.color,
-      backgroundColor: d.color + "33",
-      pointBackgroundColor: d.color,
-      pointBorderColor: "#fff",
-      pointRadius: 5,
-      tension: 0.4,
-      fill: false,
-    })),
-  };
+  const safeDatasets = (datasets ?? []).map((d) => ({
+    label: d.label,
+    data: d.data,
+    borderColor: d.color,
+    backgroundColor: d.color + (minimal ? "33" : "20"),
+    pointBackgroundColor: d.color,
+    pointBorderColor: "#fff",
+    pointRadius: minimal ? 3 : 5,
+    tension: 0.4,
+    fill: false,
+  }));
+  const data = { labels, datasets: safeDatasets };
   const options = {
     responsive: true,
     maintainAspectRatio: false,

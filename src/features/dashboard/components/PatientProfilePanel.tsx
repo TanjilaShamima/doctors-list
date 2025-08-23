@@ -1,15 +1,21 @@
-import { Patient, getPatient } from "@/@services/api/patientService";
+import {
+  Patient,
+  fetchJessica,
+  fetchPatientByIdOrName,
+} from "@/@services/api/patientService";
 
 interface PatientProfilePanelProps {
   id?: string;
 }
 
 export async function PatientProfilePanel({ id }: PatientProfilePanelProps) {
-  if (!id)
-    return <div className="p-4 text-sm text-gray-500">Select a patient</div>;
-  let patient: Patient | null = null;
+  let patient: Patient | undefined;
   try {
-    patient = await getPatient(id);
+    if (id) {
+      patient = await fetchPatientByIdOrName(id);
+    } else {
+      patient = await fetchJessica();
+    }
   } catch {
     return <div className="p-4 text-sm text-red-600">Failed to load.</div>;
   }
@@ -41,9 +47,12 @@ export async function PatientProfilePanel({ id }: PatientProfilePanelProps) {
         <InfoRow label="Contact Info." value={patient.phone_number || "—"} />
         <InfoRow
           label="Emergency Contacts"
-          value={patient.emergency_contact_phone || "—"}
+          value={patient.emergency_contact || "—"}
         />
-        <InfoRow label="Insurance Provider" value={patient.insurance || "—"} />
+        <InfoRow
+          label="Insurance Provider"
+          value={patient.insurance_type || "—"}
+        />
       </div>
       <div className="px-6 pb-6 mt-auto">
         <button className="w-full rounded-full bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium py-2 transition">

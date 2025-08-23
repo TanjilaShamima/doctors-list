@@ -1,9 +1,9 @@
-import { getPatients, Patient } from "@/@services/api/patientService";
+import {  fetchAllPatients, Patient } from "@/@services/api/patientService";
 
 export async function PatientList() {
   let patients: Patient[] = [];
   try {
-    patients = await getPatients();
+    patients = await fetchAllPatients();
   } catch (e) {
     const message = e instanceof Error ? e.message : "Unknown error";
     return (
