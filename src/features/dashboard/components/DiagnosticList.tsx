@@ -1,3 +1,5 @@
+import { Activity, AlertCircle, CheckCircle2, ShieldCheck } from "lucide-react";
+
 export interface DiagnosticItem {
   problem: string;
   description: string;
@@ -39,22 +41,37 @@ export function DiagnosticList() {
             </tr>
           </thead>
           <tbody>
-            {sample.map((item) => (
-              <tr
-                key={item.problem}
-                className="border-t border-gray-100 hover:bg-gray-50"
-              >
-                <td className="px-4 py-2 font-medium text-gray-800">
-                  {item.problem}
-                </td>
-                <td className="px-4 py-2 text-gray-600">{item.description}</td>
-                <td className="px-4 py-2">
-                  <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600">
-                    {item.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
+            {sample.map((item) => {
+              const statusIcon =
+                item.status === "Cured" ? (
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                ) : item.status === "Under Observation" ? (
+                  <Activity className="h-3.5 w-3.5 text-amber-500" />
+                ) : item.status === "Inactive" ? (
+                  <ShieldCheck className="h-3.5 w-3.5 text-gray-400" />
+                ) : (
+                  <AlertCircle className="h-3.5 w-3.5 text-gray-400" />
+                );
+              return (
+                <tr
+                  key={item.problem}
+                  className="border-t border-gray-100 hover:bg-gray-50"
+                >
+                  <td className="px-4 py-2 font-medium text-gray-800 flex items-center gap-2">
+                    {statusIcon}
+                    {item.problem}
+                  </td>
+                  <td className="px-4 py-2 text-gray-600">
+                    {item.description}
+                  </td>
+                  <td className="px-4 py-2">
+                    <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600">
+                      {item.status}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

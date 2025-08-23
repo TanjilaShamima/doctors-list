@@ -4,6 +4,8 @@ interface KPICardProps {
   subtitle?: string;
   icon?: React.ReactNode;
   tone?: "blue" | "red" | "pink";
+  className?: string;
+  media?: React.ReactNode; // image or custom visual in circle
 }
 
 const toneMap: Record<string, string> = {
@@ -18,24 +20,27 @@ export function KPICard({
   subtitle,
   icon,
   tone = "blue",
+  className,
+  media,
 }: KPICardProps) {
   return (
-    <div
-      className={`flex flex-col rounded-xl border border-gray-200 bg-white p-4 shadow-sm`}
-    >
-      <div className="flex items-center gap-3">
-        {icon && (
+    <div className={`flex flex-col rounded-xl border border-gray-200 p-5 shadow-sm ${className}`}>
+      <div className="flex items-center mb-3">
+        {(icon || media) && (
           <div
-            className={`h-12 w-12 flex items-center justify-center rounded-full ring-4 ${toneMap[tone]}`}
+            className={`h-14 w-14 flex items-center justify-center rounded-full ring-4 ${toneMap[tone]}`}
           >
-            {icon}
+            {media || icon}
           </div>
         )}
-        <div className="ml-auto text-right"></div>
       </div>
-      <div className="mt-4 text-sm text-gray-500">{title}</div>
-      <div className="text-2xl font-semibold tracking-tight">{value}</div>
-      {subtitle && <div className="mt-1 text-xs text-gray-500">{subtitle}</div>}
+      <div className="text-[13px] font-medium text-gray-600">{title}</div>
+      <div className="mt-1 text-[26px] leading-tight font-semibold tracking-tight text-gray-900">
+        {value}
+      </div>
+      {subtitle && (
+        <div className="mt-1 text-[11px] text-gray-500">{subtitle}</div>
+      )}
     </div>
   );
 }

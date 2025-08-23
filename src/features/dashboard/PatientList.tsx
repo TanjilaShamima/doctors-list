@@ -40,9 +40,9 @@ export async function PatientList() {
               <td className="px-3 py-2 hidden lg:table-cell">
                 {p.phone_number || "-"}
               </td>
-              <td className="px-3 py-2 hidden xl:table-cell">
+              {/* <td className="px-3 py-2 hidden xl:table-cell">
                 {p.email || "-"}
-              </td>
+              </td> */}
             </tr>
           ))}
           {patients.length === 0 && (

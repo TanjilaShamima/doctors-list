@@ -45,9 +45,9 @@ export function SidebarPatientList() {
               <li
                 key={p.id}
                 onClick={() => selectPatient(p.id)}
-                className={`group relative rounded-lg pl-4 pr-2 py-2 flex items-center gap-3 cursor-pointer text-sm transition-colors ${
+                className={`group relative pl-4 pr-2 py-2 flex items-center gap-3 cursor-pointer text-sm transition-colors ${
                   selected
-                    ? "bg-teal-50 ring-1 ring-teal-200"
+                    ? "bg-teal-100"
                     : "hover:bg-gray-50"
                 }`}
               >
