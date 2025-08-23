@@ -2,6 +2,7 @@
 import {
   CategoryScale,
   Chart as ChartJS,
+  Filler,
   Legend,
   LinearScale,
   LineElement,
@@ -18,47 +19,63 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
+
+export interface LineDatasetConfig {
+  label: string;
+  data: number[];
+  color: string;
+}
 
 interface PatientChartProps {
   labels: string[];
-  values: number[];
-  title?: string;
+  datasets: LineDatasetConfig[];
+  heightClass?: string;
+  minimal?: boolean;
 }
 
 export function PatientChart({
   labels,
-  values,
-  title = "Patients",
+  datasets,
+  heightClass = "h-48 md:h-56",
+  minimal,
 }: PatientChartProps) {
   const data = {
     labels,
-    datasets: [
-      {
-        label: title,
-        data: values,
-        borderColor: "#2563eb",
-        backgroundColor: "rgba(37,99,235,0.2)",
-        tension: 0.3,
-        fill: true,
-      },
-    ],
+    datasets: datasets.map((d) => ({
+      label: d.label,
+      data: d.data,
+      borderColor: d.color,
+      backgroundColor: d.color + "33",
+      pointBackgroundColor: d.color,
+      pointBorderColor: "#fff",
+      pointRadius: 5,
+      tension: 0.4,
+      fill: false,
+    })),
   };
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: "top" as const },
-      title: { display: !!title, text: title },
+      legend: {
+        display: !minimal,
+        position: "top" as const,
+        labels: { usePointStyle: true, boxWidth: 8 },
+      },
+      title: { display: false },
+      tooltip: { mode: "index" as const, intersect: false },
     },
+    interaction: { mode: "index" as const, intersect: false },
     scales: {
-      x: { ticks: { autoSkip: true, maxTicksLimit: 8 } },
-      y: { beginAtZero: true },
+      x: { grid: { display: false } },
+      y: { beginAtZero: false, grid: { color: "#eee" } },
     },
   };
   return (
-    <div className="w-full h-64 sm:h-80">
+    <div className={`w-full ${heightClass}`}>
       <Line data={data} options={options} />
     </div>
   );
