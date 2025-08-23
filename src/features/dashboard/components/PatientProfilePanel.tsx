@@ -1,32 +1,28 @@
-import {
-  Patient,
-  fetchJessica,
-  fetchPatientByIdOrName,
-} from "@/@services/api/patientService";
+"use client";
+import { usePatientStore } from "@/@stores/patientStore";
+import Image from "next/image";
+import { useEffect } from "react";
 
-interface PatientProfilePanelProps {
-  id?: string;
-}
-
-export async function PatientProfilePanel({ id }: PatientProfilePanelProps) {
-  let patient: Patient | undefined;
-  try {
-    if (id) {
-      patient = await fetchPatientByIdOrName(id);
-    } else {
-      patient = await fetchJessica();
-    }
-  } catch {
-    return <div className="p-4 text-sm text-red-600">Failed to load.</div>;
-  }
-  if (!patient) return null;
+export function PatientProfilePanel() {
+  const { selected, ensureSelected } = usePatientStore();
+  useEffect(() => {
+    ensureSelected();
+  }, [ensureSelected]);
+  const patient = selected;
+  if (!patient)
+    return <div className="p-6 text-sm text-gray-500">Loading...</div>;
   const fullName = `${patient.first_name} ${patient.last_name}`;
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-col items-center p-6 pb-4">
         <div className="h-28 w-28 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-semibold text-gray-600">
-          {patient.first_name.charAt(0)}
-          {patient.last_name.charAt(0)}
+          <Image
+            src={patient.profile_picture || ''}
+            alt={fullName}
+            width={112}
+            height={112}
+            className="object-cover"
+          />
         </div>
         <h2 className="mt-4 text-lg font-semibold text-gray-800">{fullName}</h2>
       </div>

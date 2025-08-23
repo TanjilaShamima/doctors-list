@@ -1,5 +1,6 @@
 "use client";
 import Logo from "@/@assets/logo.svg";
+import ProfileImage from '@/@assets/profile-placeholder.png';
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -86,7 +87,7 @@ export function TopNav() {
           <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-200">
             {/* Placeholder avatar */}
             <Image
-              src="/next.svg"
+              src={ProfileImage}
               alt="doctor"
               width={40}
               height={40}
@@ -94,7 +95,7 @@ export function TopNav() {
             />
           </div>
           <div className="hidden sm:block leading-tight">
-            <p className="text-sm font-semibold">Dr. Jose Simmons</p>
+            <p className="text-sm text-[#072635] font-semibold">Dr. Jose Simmons</p>
             <p className="text-xs text-gray-500">General Practitioner</p>
           </div>
         </div>

@@ -1,7 +1,7 @@
-import {
-  DiagnosisHistoryPoint,
-  fetchJessica,
-} from "@/@services/api/patientService";
+"use client";
+import { DiagnosisHistoryPoint } from "@/@services/api/patientService";
+import { usePatientStore } from "@/@stores/patientStore";
+import { useEffect, useMemo } from "react";
 import { DiagnosticList } from "./components/DiagnosticList";
 import { KPICard } from "./components/KPICard";
 import { LabResultsPanel } from "./components/LabResultsPanel";
@@ -9,23 +9,36 @@ import { PatientProfilePanel } from "./components/PatientProfilePanel";
 import { SidebarPatientList } from "./components/SidebarPatientList";
 import { PatientChart } from "./PatientChart";
 
-// Layout modeling the provided dashboard screenshot
-export default async function DashboardPage({
-  patientId,
-}: {
-  patientId?: string;
-}) {
-  // TODO: Derive these labels and datasets from real patient vitals history when API clarified
-  const jessica = await fetchJessica();
-  const history: DiagnosisHistoryPoint[] =
-    (jessica?.diagnosis_history as DiagnosisHistoryPoint[]) || [];
-  const labels = history.map((h) => h.month).filter((m): m is string => !!m);
-  const systolic = history
-    .map((h) => h.systolic)
-    .filter((n): n is number => typeof n === "number");
-  const diastolic = history
-    .map((h) => h.diastolic)
-    .filter((n): n is number => typeof n === "number");
+export default function DashboardPage() {
+  const { selected, ensureSelected } = usePatientStore();
+  useEffect(() => {
+    ensureSelected();
+  }, [ensureSelected]);
+
+  const history: DiagnosisHistoryPoint[] = useMemo(
+    () =>
+      (selected?.diagnosis_history as DiagnosisHistoryPoint[] | undefined) ||
+      [],
+    [selected?.diagnosis_history]
+  );
+  const labels = useMemo(
+    () => history.map((h) => h.month).filter((m): m is string => !!m),
+    [history]
+  );
+  const systolic = useMemo(
+    () =>
+      history
+        .map((h) => h.systolic)
+        .filter((n): n is number => typeof n === "number"),
+    [history]
+  );
+  const diastolic = useMemo(
+    () =>
+      history
+        .map((h) => h.diastolic)
+        .filter((n): n is number => typeof n === "number"),
+    [history]
+  );
   const datasets = [
     { label: "Systolic", data: systolic, color: "#7E6CAB" },
     { label: "Diastolic", data: diastolic, color: "#5B8DEF" },
@@ -36,12 +49,9 @@ export default async function DashboardPage({
       className="grid gap-6 xl:gap-8 w-full 2xl:gap-10"
       style={{ gridTemplateColumns: "280px 1fr 300px" }}
     >
-      {/* Left Sidebar */}
       <aside className="hidden lg:flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm h-[calc(100vh-160px)] sticky top-28 overflow-hidden">
-        <SidebarPatientList activeId={patientId} />
+        <SidebarPatientList />
       </aside>
-
-      {/* Main Content */}
       <main className="flex flex-col gap-6 xl:gap-8">
         <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4 md:p-6 flex flex-col gap-6">
           <div className="flex items-center justify-between">
@@ -82,11 +92,9 @@ export default async function DashboardPage({
           <DiagnosticList />
         </div>
       </main>
-
-      {/* Right Column */}
       <aside className="hidden xl:flex flex-col gap-6 xl:gap-8">
         <div className="rounded-2xl border border-gray-200 bg-white shadow-sm h-[520px] overflow-hidden">
-          <PatientProfilePanel id={patientId} />
+          <PatientProfilePanel />
         </div>
         <div className="rounded-2xl border border-gray-200 bg-white shadow-sm h-[360px] overflow-hidden">
           <LabResultsPanel />
