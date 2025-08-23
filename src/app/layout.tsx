@@ -25,9 +25,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 min-h-screen`}
       >
-        {children}
+        <div className="mx-auto max-w-7xl flex flex-col min-h-screen">
+          <header className="p-4 md:p-6 bg-white shadow-sm sticky top-0 z-10 flex items-center gap-4">
+            <h1 className="text-xl font-semibold tracking-tight">
+              Patient Dashboard
+            </h1>
+          </header>
+          <div className="flex-1 p-4 md:p-6">{children}</div>
+          <footer className="p-4 text-center text-xs text-gray-500">
+            © {new Date().getFullYear()} Patient Records
+          </footer>
+        </div>
       </body>
     </html>
   );
