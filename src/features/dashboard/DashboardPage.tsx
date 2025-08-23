@@ -1,10 +1,10 @@
 "use client";
+import Heart from "@/@assets/HeartBPM.png";
+import Respiratory from "@/@assets/respiratoryRate.png";
+import Temperature from "@/@assets/temperature.png";
 import { DiagnosisHistoryPoint } from "@/@services/api/patientService";
-import Image from "next/image";
-import Heart from '@/@assets/HeartBPM.png';
-import Respiratory from '@/@assets/respiratoryRate.png';
-import Temperature from '@/@assets/temperature.png';
 import { usePatientStore } from "@/@stores/patientStore";
+import Image from "next/image";
 import { useEffect, useMemo } from "react";
 import { DiagnosticList } from "./components/DiagnosticList";
 import { KPICard } from "./components/KPICard";
@@ -25,39 +25,90 @@ export default function DashboardPage() {
       [],
     [selected?.diagnosis_history]
   );
-  // Fixed months per design reference (Oct 2023 - Mar 2024)
-  const labels = [
-    "Oct 2023",
-    "Nov 2023",
-    "Dec 2023",
-    "Jan 2024",
-    "Feb 2024",
-    "Mar 2024",
-  ];
-  // Build a lookup from month label (normalized) to readings
-  function normalize(m?: string) {
-    return (m || '').replace(/,/g, '').trim().toLowerCase();
+  // Parse real history into chronological monthly points
+  interface ParsedPoint {
+    label: string;
+    date: Date;
+    sys: number | null;
+    dia: number | null;
+    respiratory?: number | null;
+    temperature?: number | null;
+    heart?: number | null;
   }
-  const byMonth = new Map<string, { sys?: number; dia?: number }>();
-  history.forEach((pt) => {
-    const key = normalize(pt.month);
-    if (!key) return;
-    const entry = byMonth.get(key) || {};
-    if (typeof pt.systolic === 'number') entry.sys = pt.systolic;
-    if (typeof pt.diastolic === 'number') entry.dia = pt.diastolic;
-    byMonth.set(key, entry);
-  });
-  const systolic: (number | null)[] = [];
-  const diastolic: (number | null)[] = [];
-  labels.forEach((label) => {
-    const key = normalize(label);
-    const entry = byMonth.get(key);
-    systolic.push(entry?.sys ?? null);
-    diastolic.push(entry?.dia ?? null);
-  });
+  const parsed: ParsedPoint[] = history
+    .map((pt) => {
+      const raw = (pt.month || "").replace(/,/g, " ").trim();
+      let dt = new Date(raw);
+      if (isNaN(dt.getTime())) {
+        // Try adding day if missing (assume 1st)
+        dt = new Date(raw + " 1");
+      }
+      if (isNaN(dt.getTime())) dt = new Date();
+      const label = dt.toLocaleDateString(undefined, {
+        month: "short",
+        year: "numeric",
+      });
+      return {
+        label,
+        date: dt,
+        sys: typeof pt.systolic === "number" ? pt.systolic : null,
+        dia: typeof pt.diastolic === "number" ? pt.diastolic : null,
+        respiratory:
+          typeof pt.respiratory_rate === "number" ? pt.respiratory_rate : null,
+        temperature: typeof pt.temperature === "number" ? pt.temperature : null,
+        heart: typeof pt.heart_rate === "number" ? pt.heart_rate : null,
+      } as ParsedPoint;
+    })
+    .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+  // Deduplicate by label keeping latest entry
+  const lastByLabel = new Map<string, ParsedPoint>();
+  parsed.forEach((p) => lastByLabel.set(p.label, p));
+  const ordered = Array.from(lastByLabel.values());
+  const labels = ordered.map((p) => p.label);
+  const systolic: (number | null)[] = ordered.map((p) => p.sys);
+  const diastolic: (number | null)[] = ordered.map((p) => p.dia);
+
+  // Helper to get latest non-null value
+  const latest = (getter: (p: ParsedPoint) => number | null) => {
+    for (let i = ordered.length - 1; i >= 0; i--) {
+      const v = getter(ordered[i]);
+      if (typeof v === "number") return v;
+    }
+    return null;
+  };
+  const latestResp = latest((p) => p.respiratory ?? null);
+  const latestTemp = latest((p) => p.temperature ?? null);
+  const latestHeart = latest((p) => p.heart ?? null);
+
+  // Status logic (simple thresholds)
+  const respiratoryStatus =
+    latestResp == null
+      ? "No data"
+      : latestResp < 12
+      ? "Low"
+      : latestResp > 20
+      ? "High"
+      : "Normal";
+  const tempStatus =
+    latestTemp == null
+      ? "No data"
+      : latestTemp < 97
+      ? "Low"
+      : latestTemp > 99
+      ? "High"
+      : "Normal";
+  const heartStatus =
+    latestHeart == null
+      ? "No data"
+      : latestHeart < 60
+      ? "Lower than Average"
+      : latestHeart > 100
+      ? "Higher than Average"
+      : "Normal";
   const datasets = [
-    { label: 'Systolic', data: systolic, color: '#7E6CAB' },
-    { label: 'Diastolic', data: diastolic, color: '#5B8DEF' },
+    { label: "Systolic", data: systolic, color: "#7E6CAB" },
+    { label: "Diastolic", data: diastolic, color: "#5B8DEF" },
   ];
 
   return (
@@ -76,7 +127,8 @@ export default function DashboardPage() {
                 Diagnosis History
               </h2>
               <p className="text-[12px] text-slate-500 max-w-md">
-                Blood pressure trends over the last 6 months. Values outside the normal range are highlighted.
+                Blood pressure trends over the last 6 months. Values outside the
+                normal range are highlighted.
               </p>
             </div>
             <button className="text-[11px] inline-flex items-center gap-1 rounded-full bg-slate-100 hover:bg-slate-200 px-3 py-1 font-medium text-slate-600">
@@ -130,25 +182,25 @@ export default function DashboardPage() {
           <div className="grid md:grid-cols-3 gap-5">
             <KPICard
               title="Respiratory Rate"
-              value="20 bpm"
-              subtitle="Normal"
+              value={latestResp != null ? `${latestResp} bpm` : "—"}
+              subtitle={respiratoryStatus}
               tone="blue"
-              media={<Image src={Heart} alt="Heart Rate" />}
+              media={<Image src={Respiratory} alt="Respiratory Rate" />}
               className="bg-[#E0F3FA]"
             />
             <KPICard
               title="Temperature"
-              value="98.6°F"
-              subtitle="Normal"
+              value={latestTemp != null ? `${latestTemp.toFixed(1)}°F` : "—"}
+              subtitle={tempStatus}
               tone="red"
               className="bg-[#FFE6E9]"
               media={<Image src={Temperature} alt="Temperature" />}
             />
             <KPICard
               title="Heart Rate"
-              value="78 bpm"
-              subtitle="Lower than Average"
-              media={<Image src={Respiratory} alt="Respiratory Rate" />}
+              value={latestHeart != null ? `${latestHeart} bpm` : "—"}
+              subtitle={heartStatus}
+              media={<Image src={Heart} alt="Heart Rate" />}
               tone="pink"
               className="bg-[#FFE6F1]"
             />

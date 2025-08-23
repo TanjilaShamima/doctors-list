@@ -59,8 +59,20 @@ const PASSWORD = process.env.NEXT_PUBLIC_PATIENT_API_PASSWORD || ""; // should b
 
 function buildAuthHeader(): string | undefined {
     if (!USERNAME || !PASSWORD) return undefined;
-    const token = Buffer.from(`${USERNAME}:${PASSWORD}`).toString("base64");
-    return `Basic ${token}`;
+    try {
+        let token: string;
+        if (typeof window !== 'undefined' && typeof btoa === 'function') {
+            token = btoa(`${USERNAME}:${PASSWORD}`);
+        } else {
+            // Node / server side
+
+            const buff = Buffer.from(`${USERNAME}:${PASSWORD}`);
+            token = buff.toString('base64');
+        }
+        return `Basic ${token}`;
+    } catch {
+        return undefined;
+    }
 }
 
 async function fetchJSON<T>(url: string): Promise<T> {
@@ -71,10 +83,9 @@ async function fetchJSON<T>(url: string): Promise<T> {
     console.log("res", res)
     if (!res.ok) {
         const text = await res.text();
-        // throw new Error(`Request failed ${res.status}: ${text}`);
-        console.log('error', res)
+        throw new Error(`Request failed ${res.status}: ${text}`);
     }
-    return res.json();
+    return res.json() as Promise<T>;
 }
 
 function mapPatient(raw: RawPatient): Patient {

@@ -24,7 +24,9 @@ export function KPICard({
   media,
 }: KPICardProps) {
   return (
-    <div className={`flex flex-col rounded-xl border border-gray-200 p-5 shadow-sm ${className}`}>
+    <div
+      className={`flex flex-col rounded-xl border border-gray-200 p-5 shadow-sm ${className}`}
+    >
       <div className="flex items-center mb-3">
         {(icon || media) && (
           <div
