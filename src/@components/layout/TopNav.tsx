@@ -1,7 +1,8 @@
 "use client";
+import Logo from "@/@assets/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import React from "react";
 
 interface NavItem {
@@ -20,29 +21,30 @@ const navItems: NavItem[] = [
 
 export function TopNav() {
   const pathname = usePathname();
-  const activeTab =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("tab")
-      : null;
+  const searchParams = useSearchParams();
+  const tab = searchParams.get("tab");
+  const currentFullHref =
+    pathname + (searchParams.size ? `?${searchParams.toString()}` : "");
 
   function isActive(item: NavItem) {
-    if (item.href === "/" && pathname === "/") return !activeTab;
-    if (item.href.startsWith("/?tab=")) {
-      const tab = item.href.split("=")[1];
-      return activeTab === tab;
-    }
-    return pathname === item.href;
+    // Default: if no tab specified and we are on root, highlight Patients by default
+    if (!tab && pathname === "/" && item.label === "Patients") return true;
+    // Otherwise match full href (path + query)
+    return item.href === currentFullHref;
   }
 
   return (
     <nav className="flex items-center gap-8 w-full rounded-full bg-white px-4 lg:px-6 h-20 shadow-sm border">
-      <div className="flex items-center gap-2 min-w-[160px]">
-        <div className="h-10 w-10 rounded-full bg-cyan-600 flex items-center justify-center text-white font-bold">
-          T
-        </div>
-        <span className="text-lg font-semibold tracking-tight">Tech.Care</span>
+      <div className="flex items-center gap-2 min-w-[200px]">
+        <Image
+          src={Logo}
+          alt="Logo"
+          width={250}
+          height={40}
+          className="h-10 w-auto rounded-full object-cover"
+        />
       </div>
-      <ul className="hidden md:flex items-center gap-2 flex-1">
+      <ul className="hidden md:flex items-center gap-1 flex-1">
         {navItems.map((item) => {
           const active = isActive(item);
           return (
