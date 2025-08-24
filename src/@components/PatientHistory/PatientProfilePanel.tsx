@@ -14,7 +14,7 @@ export function PatientProfilePanel() {
   const patient = selected;
   if (!patient)
     return (
-      <div className="flex flex-col h-auto px-5 py-5 animate-pulse">
+      <div className="flex flex-col h-auto px-5 pt-8 pb-5 animate-pulse">
         <div className="flex flex-col items-center pb-6">
           <Skeleton className="h-28 w-28 rounded-full" />
           <Skeleton className="mt-5 h-5 w-40" />

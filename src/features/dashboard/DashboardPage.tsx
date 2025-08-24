@@ -61,7 +61,7 @@ export default function DashboardPage() {
       className="grid gap-6 xl:gap-8 w-full 2xl:gap-10"
       style={{ gridTemplateColumns: "280px 1fr 300px" }}
     >
-      <aside className="hidden lg:flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm h-[calc(100vh-160px)] sticky top-28 overflow-hidden">
+      <aside className="flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm h-[calc(100vh-160px)] sticky top-28 overflow-hidden">
         <SidebarPatientList />
       </aside>
       <main className="flex flex-col gap-6 xl:gap-8">
@@ -135,7 +135,7 @@ export default function DashboardPage() {
           <DiagnosticList />
         </div>
       </main>
-      <aside className={`hidden xl:flex flex-col gap-6 xl:gap-8 sticky top-28`}>
+      <aside className={`flex flex-col gap-6 xl:gap-8 sticky top-28`}>
         <div className="rounded-2xl border border-gray-200 bg-white shadow-sm flex-none overflow-hidden max-h-auto">
           <PatientProfilePanel />
         </div>
