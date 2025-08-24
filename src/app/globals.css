@@ -16,6 +16,7 @@
   /* Chart / vitals accent colors */
   --color-bp-systolic: #E66FD2;
   --color-bp-diastolic: #5B8DEF;
+  --color-light-gray: #F6F7F8;
 }
 
 @media (prefers-color-scheme: dark) {
