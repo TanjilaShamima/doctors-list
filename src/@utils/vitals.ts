@@ -47,7 +47,10 @@ export function parseDiagnosisHistory(history: DiagnosisHistoryPoint[] = []): Pa
                 // As a last resort, today (avoids runtime errors while still producing a point)
                 dt = new Date();
             }
-            const label = dt.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+            // Format label with comma between month and year (e.g., "Oct, 2023") per design request
+            const monthTxt = dt.toLocaleString(undefined, { month: 'short' });
+            const yearTxt = dt.getFullYear();
+            const label = `${monthTxt}, ${yearTxt}`;
 
             // Support two possible shapes:
             // Old (flat): pt.systolic, pt.diastolic, pt.respiratory_rate (number), etc.

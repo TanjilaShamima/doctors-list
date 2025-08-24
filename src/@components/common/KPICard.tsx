@@ -27,21 +27,21 @@ export function KPICard({
     <div
       className={`flex flex-col rounded-xl border border-gray-200 p-5 shadow-sm ${className}`}
     >
-      <div className="flex items-center mb-3">
+      <div className="flex items-center mb-4">
         {(icon || media) && (
           <div
-            className={`h-14 w-14 flex items-center justify-center rounded-full ring-4 ${toneMap[tone]}`}
+            className={`h-24 w-24 flex items-center justify-center rounded-full ring-4 ${toneMap[tone]}`}
           >
             {media || icon}
           </div>
         )}
       </div>
-      <div className="text-[13px] font-medium text-gray-600">{title}</div>
-      <div className="mt-1 text-[26px] leading-tight font-semibold tracking-tight text-gray-900">
+      <div className="text-base font-normal text-brand-deep">{title}</div>
+      <div className="text-3xl leading-tight font-extrabold tracking-tight text-brand-deep">
         {value}
       </div>
       {subtitle && (
-        <div className="mt-1 text-[11px] text-gray-500">{subtitle}</div>
+        <div className="mt-4 text-sm text-brand-deep">{subtitle}</div>
       )}
     </div>
   );

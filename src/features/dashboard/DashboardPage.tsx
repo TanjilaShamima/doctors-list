@@ -60,17 +60,13 @@ export default function DashboardPage() {
         <SidebarPatientList />
       </aside>
       <main className="flex flex-col gap-6 xl:gap-8">
-        <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-5 md:p-7 flex flex-col gap-5">
+        <div className="rounded-2xl border border-gray-200 bg-white shadow-sm px-5 pt-5 pb-8 flex flex-col gap-5">
           <header className="flex items-start justify-between">
             <div className="space-y-1">
-              <h2 className="text-[17px] md:text-[18px] font-semibold tracking-tight text-slate-900">
+              <h2 className="text-base md:text-2xl font-semibold tracking-tight text-brand-deep">
                 {DASHBOARD_TEXT.diagnosisHistoryTitle}
               </h2>
             </div>
-            {/* <button className="text-[11px] inline-flex items-center gap-1 rounded-full bg-slate-100 hover:bg-slate-200 px-3 py-1 font-medium text-slate-600">
-              {DASHBOARD_TEXT.lastMonthsLabel}{" "}
-              <span className="text-[10px]">▼</span>
-            </button> */}
           </header>
           <BloodPressureHistory parsed={parsed} />
           <div className="grid md:grid-cols-3 gap-5">

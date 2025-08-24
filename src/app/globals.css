@@ -13,6 +13,9 @@
   /* Custom brand color */
   --color-brand-deep: #072635;
   --color-gray-mid: #707070;
+  /* Chart / vitals accent colors */
+  --color-bp-systolic: #E66FD2;
+  --color-bp-diastolic: #5B8DEF;
 }
 
 @media (prefers-color-scheme: dark) {

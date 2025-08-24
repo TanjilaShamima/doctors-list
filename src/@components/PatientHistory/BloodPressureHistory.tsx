@@ -1,6 +1,7 @@
 import { DASHBOARD_TEXT } from "@/@contents/dashboardText";
 import { ParsedPoint } from "@/@types/vitals";
 import { summarizeBloodPressure } from "@/@utils/vitals";
+import { ChevronDown } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { PatientChart } from "./PatientChart";
 
@@ -41,19 +42,22 @@ const BloodPressureHistory = ({ parsed }: Props) => {
       : "Last 1 year";
   return (
     <div className="rounded-xl bg-violet-50/70 p-4 md:p-5 border border-violet-100 flex flex-col gap-4">
-      <div className="relative flex items-center text-[13px] font-medium text-slate-700 min-h-[28px]">
-        <span className="inline-flex items-center gap-2 pr-4">
+      <div className="relative flex items-center text-base font-medium text-slate-700 min-h-[28px]">
+        <span className="inline-flex items-center gap-2 text-lg text-brand-deep font-bold">
           {DASHBOARD_TEXT.bloodPressureLabel}
         </span>
         <button
           type="button"
           onClick={toggleOpen}
-          className="absolute left-1/2 -translate-x-1/2 text-[12px] font-medium text-slate-700 inline-flex items-center gap-1 border-b border-slate-300/70 pb-0.5 hover:text-slate-900 focus:outline-none"
+          className="absolute left-1/2 -translate-x-1/2 text-sm font-normal text-brand-deep inline-flex items-center gap-2 pb-0.5 hover:text-slate-900 focus:outline-none"
         >
-          {rangeLabel} <span className="text-[10px]">▼</span>
+          {rangeLabel}{" "}
+          <span className="cursor-pointer">
+            <ChevronDown />
+          </span>
         </button>
         {open && (
-          <ul className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-40 rounded-md border border-violet-100 bg-white shadow-md text-[12px] font-medium text-slate-700 z-10 overflow-hidden">
+          <ul className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-40 rounded-md border border-violet-100 bg-white shadow-md text-sm font-medium text-slate-700 z-10 overflow-hidden">
             <li>
               <button
                 onClick={() => selectRange("2m")}
@@ -97,28 +101,29 @@ const BloodPressureHistory = ({ parsed }: Props) => {
             yMax={220}
           />
         </div>
-        <div className="w-full md:w-32 flex flex-col gap-5 text-sm">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2 text-[12px] font-medium text-slate-700">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#7E6CAB]"></span>
+        <div className="w-full md:w-42 flex flex-col text-sm">
+          <div className="space-y-1 pb-5">
+            <div className="flex items-center gap-2 text-sm font-bold text-brand-deep">
+              <span className="h-3 w-3 rounded-full bg-bp-systolic"></span>
               {DASHBOARD_TEXT.systolicLabel}
             </div>
-            <div className="mt-0.5 text-[26px] leading-none font-semibold text-slate-900">
+            <div className="my-2 text-2xl leading-none font-semibold text-brand-deep">
               {systolic.at(-1) ?? "—"}
             </div>
-            <div className="mt-1 text-[11px] text-pink-600 flex items-center gap-1 font-medium">
+            <div className=" text-sm text-brand-deep flex items-center gap-1 font-normal">
               ▲ Higher than Average
             </div>
           </div>
+          <hr className="border-t border-slate-200 mb-5" />
           <div className="space-y-1">
-            <div className="flex items-center gap-2 text-[12px] font-medium text-slate-700">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#5B8DEF]"></span>
+            <div className="flex items-center gap-2 text-sm font-bold text-brand-deep">
+              <span className="h-3 w-3 rounded-full bg-bp-diastolic"></span>
               {DASHBOARD_TEXT.diastolicLabel}
             </div>
-            <div className="mt-0.5 text-[26px] leading-none font-semibold text-slate-900">
+            <div className="my-2 text-[26px] leading-none font-semibold text-slate-900">
               {diastolic.at(-1) ?? "—"}
             </div>
-            <div className="mt-1 text-[11px] text-emerald-600 flex items-center gap-1 font-medium">
+            <div className="text-sm text-brand-deep flex items-center gap-1 font-normal">
               ▼ Lower than Average
             </div>
           </div>

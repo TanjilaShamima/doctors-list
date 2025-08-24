@@ -76,17 +76,23 @@ export function PatientChart({
     scales: {
       x: {
         grid: { color: "#f1f5f9" },
-        ticks: { color: "#6b7280", font: { size: 11 } },
+        // Styling per request: text-xs (~12px), brand color, normal weight
+        ticks: {
+          color: "var(--color-brand-deep)",
+          font: { size: 12, weight: "normal" as const },
+        },
       },
       y: {
         grid: { display: true, color: "#e5e7eb" }, // light gray vertical lines
         border: { display: true, color: "#cbd5e1" }, // gray x-axis baseline
-        ticks: { color: "#6b7280", font: { size: 11 }, stepSize: 20 },
+        ticks: {
+          color: "var(--color-brand-deep)",
+          font: { size: 12, weight: "normal" as const },
+          stepSize: 20,
+        },
         beginAtZero: false,
         min: typeof yMin === "number" ? yMin : undefined,
         max: typeof yMax === "number" ? yMax : undefined,
-        // grid: { color: "#f1f5f9" },
-        // ticks: { color: "#6b7280", font: { size: 11 }, stepSize: 20 },
       },
     },
   };

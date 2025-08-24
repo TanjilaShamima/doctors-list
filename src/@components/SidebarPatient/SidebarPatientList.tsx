@@ -35,7 +35,7 @@ export function SidebarPatientList() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-4 pt-4 pb-4">
+      <div className="flex items-center justify-between px-5 pt-5 pb-4">
         <div className="font-extrabold text-brand-deep select-none text-2xl">Patients</div>
         <button
           aria-label={showSearch ? "Close search" : "Open search"}
