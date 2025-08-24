@@ -3,6 +3,8 @@ import { usePatientStore } from "@/@stores/patientStore";
 import { Search, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SidebarPatientItem } from "./SidebarPatientItem";
+import search from '@/@assets/search.png';
+import Image from "next/image";
 
 export function SidebarPatientList() {
   const { patients, loadPatients, loading, selectedId, selectPatient, error } =
@@ -33,17 +35,22 @@ export function SidebarPatientList() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-4 pt-4 pb-3">
-        <div className="font-semibold text-gray-800 select-none">Patients</div>
+      <div className="flex items-center justify-between px-4 pt-4 pb-4">
+        <div className="font-extrabold text-brand-deep select-none text-2xl">Patients</div>
         <button
           aria-label={showSearch ? "Close search" : "Open search"}
-          className="h-8 w-8 flex items-center justify-center rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition"
+          className="h-8 w-8 flex items-center justify-center rounded-md transition cursor-pointer"
           onClick={() => setShowSearch((s) => !s)}
         >
           {showSearch ? (
             <X className="h-4 w-4" />
           ) : (
-            <Search className="h-4 w-4" />
+            <Image
+              src={search}
+              alt="Search"
+              width={18}
+              height={18}
+            />
           )}
         </button>
       </div>
@@ -62,7 +69,7 @@ export function SidebarPatientList() {
         </div>
       )}
       {error && <div className="px-4 text-xs text-red-600 pb-2">{error}</div>}
-      <ul className="flex-1 overflow-y-auto thin-scroll pr-1 space-y-1">
+      <ul className="flex-1 overflow-y-auto thin-scroll pr-1 space-y-1 pt-4">
         {loading && (
           <li className="px-4 py-2 text-xs text-gray-500">Loading...</li>
         )}

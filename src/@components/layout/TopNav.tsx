@@ -5,34 +5,24 @@ import { NAV_ITEMS, NavItem } from "@/@contents/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import setting from '@/@assets/setting.png';
+import more from '@/@assets/more.png';
 
 // Items provided via @contents/navigation
 
-export function TopNav() {
+function TopNavInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
   const currentFullHref =
     pathname + (searchParams.size ? `?${searchParams.toString()}` : "");
-
-  function isActive(item: NavItem) {
-    // Default: if no tab specified and we are on root, highlight Patients by default
+  const isActive = (item: NavItem) => {
     if (!tab && pathname === "/" && item.label === "Patients") return true;
-    // Otherwise match full href (path + query)
     return item.href === currentFullHref;
-  }
-
+  };
   return (
-    <nav className="flex items-center gap-8 w-full rounded-full bg-white px-4 lg:px-6 h-20 shadow-sm border">
-      <div className="flex items-center gap-2 min-w-[200px]">
-        <Image
-          src={Logo}
-          alt="Logo"
-          width={250}
-          height={40}
-          className="h-10 w-auto rounded-full object-cover"
-        />
-      </div>
+    <>
       <ul className="hidden md:flex items-center gap-1 mx-auto">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item);
@@ -48,20 +38,51 @@ export function TopNav() {
                 }
               >
                 {item.icon && (
-                  <span className="inline-flex items-center justify-center w-4 h-4 text-[13px]">
-                    {item.icon}
+                  <span className="inline-flex items-center justify-center w-4 h-4">
+                    <Image
+                      src={item.icon}
+                      alt={item.label}
+                      width={16}
+                      height={16}
+                    />
                   </span>
                 )}
-                <span className="ml-1">{item.label}</span>
+                <span className="ml-1 text-brand-deep font-bold text-sm">
+                  {item.label}
+                </span>
               </Link>
             </li>
           );
         })}
       </ul>
-      <div className="flex items-center gap-4">
+    </>
+  );
+}
+
+export function TopNav() {
+  return (
+    <nav className="flex items-center gap-8 w-full rounded-full bg-white px-4 lg:px-6 h-20 shadow-sm border">
+      <div className="flex items-center gap-2 min-w-[200px]">
+        <Image
+          src={Logo}
+          alt="Logo"
+          width={250}
+          height={40}
+          className="h-10 w-auto rounded-full object-cover"
+        />
+      </div>
+      <Suspense
+        fallback={
+          <div className="text-xs text-gray-500 ml-auto mr-auto">
+            Loading nav…
+          </div>
+        }
+      >
+        <TopNavInner />
+      </Suspense>
+      <div className="flex items-center gap-4 ml-auto">
         <div className="flex items-center gap-3 pr-4 border-r">
           <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-200">
-            {/* Placeholder avatar */}
             <Image
               src={ProfileImage}
               alt="doctor"
@@ -71,23 +92,33 @@ export function TopNav() {
             />
           </div>
           <div className="hidden sm:block leading-tight">
-            <p className="text-sm text-[#072635] font-semibold">
+            <p className="text-sm text-brand-deep font-bold">
               Dr. Jose Simmons
             </p>
-            <p className="text-xs text-gray-500">General Practitioner</p>
+            <p className="text-sm text-gray-mid">General Practitioner</p>
           </div>
         </div>
         <button
           aria-label="Settings"
-          className="h-10 w-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600"
+          className="flex items-center justify-center text-gray-600"
         >
-          ⚙️
+          <Image
+            src={setting}
+            alt="Settings"
+            width={20}
+            height={20}
+          />
         </button>
         <button
           aria-label="More"
-          className="h-10 w-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600"
+          className="flex items-center justify-center text-brand-deep"
         >
-          ⋮
+          <Image
+            src={more}
+            alt="More"
+            width={3}
+            height={20}
+          />
         </button>
       </div>
     </nav>

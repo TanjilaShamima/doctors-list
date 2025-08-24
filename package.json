@@ -1,7 +1,13 @@
 {
-  "name": "my-next-app",
+  "name": "patient-record-application",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Tanjila Akter Shamima",
+    "email": "tanjila.cse.diu@gmail.com",
+    "website": "https://tanjila-shamima.web.app/",
+    "github": "https://github.com/TanjilaShamima"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",

@@ -1,4 +1,5 @@
 "use client";
+import more from "@/@assets/more.png";
 import type { Patient } from "@/@types/patient";
 import Image from "next/image";
 import React from "react";
@@ -17,30 +18,28 @@ export const SidebarPatientItem: React.FC<SidebarPatientItemProps> = ({
   return (
     <li
       onClick={() => onSelect(patient.id)}
-      className={`group relative pl-4 pr-2 py-2 flex items-center gap-3 cursor-pointer text-sm transition-colors ${
+      className={`group relative px-4 py-5 flex items-center gap-3 cursor-pointer text-sm transition-colors ${
         selected ? "bg-teal-100" : "hover:bg-gray-50"
       }`}
     >
-      <div className="h-10 w-10 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-xs font-medium text-gray-600">
+      <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-xs font-medium text-gray-600">
         {patient.profile_picture ? (
           <Image
             src={patient.profile_picture}
             alt={`${patient.name}`}
-            width={40}
-            height={40}
+            width={48}
+            height={48}
             className="object-cover"
           />
         ) : (
-          <span>
-            {patient.name.charAt(0)}
-          </span>
+          <span>{patient.name.charAt(0)}</span>
         )}
       </div>
       <div className="flex flex-col flex-1 min-w-0">
-        <span className="font-medium truncate text-gray-800">
+        <span className="font-bold truncate text-sm text-brand-deep">
           {patient.name}
         </span>
-        <span className="text-[11px] text-gray-500 truncate">
+        <span className="text-sm mt-1 text-gray-mid truncate">
           {patient.gender || "—"},{" "}
           {patient.date_of_birth
             ? new Date(patient.date_of_birth).getFullYear()
@@ -51,10 +50,16 @@ export const SidebarPatientItem: React.FC<SidebarPatientItemProps> = ({
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className="opacity-0 group-hover:opacity-100 transition text-gray-400 hover:text-gray-600 p-1"
+        className="opacity-100 transition p-1 shrink-0 cursor-pointer"
         aria-label="More patient actions"
       >
-        •••
+        <Image
+          src={more}
+          alt="More"
+          width={4}
+          height={20}
+          className="rotate-90"
+        />
       </button>
     </li>
   );

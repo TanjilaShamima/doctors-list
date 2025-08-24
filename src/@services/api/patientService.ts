@@ -1,4 +1,4 @@
-import type { DiagnosisHistoryPoint, DiagnosticListItem, LabResultCategory, Patient, RawPatient } from "@/@types/patient";
+import type { DiagnosisHistoryPoint, DiagnosticListItem, Patient, RawPatient } from "@/@types/patient";
 
 // Base API info (single endpoint returns all patients)
 const BASE_URL = process.env.NEXT_PUBLIC_PATIENT_API_BASE || "https://fedskillstest.coalitiontechnologies.workers.dev";
