@@ -41,23 +41,24 @@ interface PatientChartProps {
 export function PatientChart({
   labels,
   datasets,
-  heightClass = "h-48 md:h-56",
+  // Increased height so a 20-unit step approximates ~40px spacing
+  heightClass = "h-64 md:h-72",
   minimal,
   yMin,
   yMax,
 }: PatientChartProps) {
-  const safeDatasets = (datasets ?? []).map((d, i) => ({
+  const safeDatasets = (datasets ?? []).map((d) => ({
     label: d.label,
     data: d.data,
     borderColor: d.color,
-    backgroundColor: i === 0 ? d.color + "22" : d.color + "10",
-    pointBackgroundColor: "#ffffff",
+    backgroundColor: "transparent", // no area fill
+    pointBackgroundColor: d.color,
     pointBorderColor: d.color,
     pointBorderWidth: 2,
-    pointRadius: minimal ? 3 : 5,
-    pointHoverRadius: 6,
+    pointRadius: minimal ? 4 : 6,
+    pointHoverRadius: 7,
     tension: 0.45,
-    fill: i === 0,
+    fill: false,
     spanGaps: true,
   }));
   const data = { labels, datasets: safeDatasets };
@@ -76,15 +77,18 @@ export function PatientChart({
     interaction: { mode: "index" as const, intersect: false },
     scales: {
       x: {
-        grid: { display: false },
+        grid: { color: "#f1f5f9" },
         ticks: { color: "#6b7280", font: { size: 11 } },
       },
       y: {
+        grid: { display: true, color: "#e5e7eb" }, // light gray vertical lines
+        border: { display: true, color: "#cbd5e1" }, // gray x-axis baseline
+        ticks: { color: "#6b7280", font: { size: 11 }, stepSize: 20 },
         beginAtZero: false,
         min: typeof yMin === "number" ? yMin : undefined,
         max: typeof yMax === "number" ? yMax : undefined,
-        grid: { color: "#f1f5f9" },
-        ticks: { color: "#6b7280", font: { size: 11 }, stepSize: 20 },
+        // grid: { color: "#f1f5f9" },
+        // ticks: { color: "#6b7280", font: { size: 11 }, stepSize: 20 },
       },
     },
   };

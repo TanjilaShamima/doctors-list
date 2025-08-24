@@ -1,7 +1,11 @@
 import type { DiagnosisHistoryPoint } from "@/@types/patient";
 import type { BloodPressureSummary, ParsedPoint, VitalStatuses } from "@/@types/vitals";
 
-// Helper to coerce possible string/number into number
+// Helper: coerce possible string/number/object-with-value into number
+interface ValueHolder { value?: unknown }
+function hasValue(o: unknown): o is ValueHolder {
+    return typeof o === 'object' && o !== null && 'value' in (o as Record<string, unknown>);
+}
 function toNum(val: unknown): number | null {
     if (val == null) return null;
     if (typeof val === 'number' && isFinite(val)) return val;
@@ -9,15 +13,30 @@ function toNum(val: unknown): number | null {
         const n = parseFloat(val);
         return isFinite(n) ? n : null;
     }
+    if (hasValue(val)) {
+        return toNum(val.value);
+    }
     return null;
+}
+
+// Helper: safely extract a trimmed string from various shapes
+function toStr(val: unknown): string {
+    if (val == null) return '';
+    if (typeof val === 'string') return val;
+    if (typeof val === 'number') return String(val);
+    if (hasValue(val)) {
+        const inner = val.value;
+        if (typeof inner === 'string' || typeof inner === 'number') return String(inner);
+    }
+    return '';
 }
 
 export function parseDiagnosisHistory(history: DiagnosisHistoryPoint[] = []): ParsedPoint[] {
     const parsed: ParsedPoint[] = history
         .map((pt) => {
             // Month + Year combination (e.g. "Oct" + "2023")
-            const monthPart = (pt.month || '').trim();
-            const yearPart = (pt.year || '').trim();
+            const monthPart = toStr(pt.month).trim();
+            const yearPart = toStr(pt.year).trim();
             const dateString = [monthPart, yearPart].filter(Boolean).join(' '); // e.g. "Oct 2023"
             let dt = new Date(dateString);
             if (isNaN(dt.getTime()) && dateString) {
@@ -25,7 +44,8 @@ export function parseDiagnosisHistory(history: DiagnosisHistoryPoint[] = []): Pa
                 dt = new Date(dateString + ' 1');
             }
             if (isNaN(dt.getTime())) {
-                dt = new Date(); // fallback to now
+                // As a last resort, today (avoids runtime errors while still producing a point)
+                dt = new Date();
             }
             const label = dt.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
 
@@ -68,8 +88,8 @@ export function summarizeBloodPressure(points: ParsedPoint[]): BloodPressureSumm
     const systolic = points.map((p) => p.sys);
     const diastolic = points.map((p) => p.dia);
     const datasets = [
-        { label: "Systolic", data: systolic, color: "#7E6CAB" },
-        { label: "Diastolic", data: diastolic, color: "#5B8DEF" },
+        { label: "Systolic", data: systolic, color: "#E66FD2" }, // updated color
+        { label: "Diastolic", data: diastolic, color: "#8C6FE6" }, // updated color
     ];
     return { labels, systolic, diastolic, datasets };
 }
