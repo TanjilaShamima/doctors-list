@@ -10,15 +10,28 @@ interface Props {
 
 const BloodPressureHistory = ({ parsed }: Props) => {
   // Use only real parsed data from API (no static fallback)
+  // Show only the last 6 chronological points (months)
+  const lastSix = useMemo(() => {
+    if (!parsed.length) return parsed;
+    const sorted = [...parsed].sort(
+      (a, b) => a.date.getTime() - b.date.getTime()
+    );
+    return sorted.slice(-6);
+  }, [parsed]);
+
   const { labels, systolic, diastolic, datasets } = useMemo(
-    () => summarizeBloodPressure(parsed),
-    [parsed]
+    () => summarizeBloodPressure(lastSix),
+    [lastSix]
   );
   return (
     <div className="rounded-xl bg-violet-50/70 p-4 md:p-5 border border-violet-100 flex flex-col gap-4">
-      <div className="flex items-center justify-between text-[13px] font-medium text-slate-700">
-        <span className="inline-flex items-center gap-2">
+      <div className="relative flex items-center text-[13px] font-medium text-slate-700 min-h-[24px]">
+        <span className="inline-flex items-center gap-2 pr-4">
           {DASHBOARD_TEXT.bloodPressureLabel}
+        </span>
+        <span className="absolute left-1/2 -translate-x-1/2 text-[12px] font-medium text-slate-700 inline-flex items-center gap-1">
+          {DASHBOARD_TEXT.lastMonthsLabel}{" "}
+          <span className="text-[10px]">▼</span>
         </span>
       </div>
       <div className="flex flex-col md:flex-row gap-6 md:gap-8">

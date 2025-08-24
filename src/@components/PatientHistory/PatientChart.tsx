@@ -67,9 +67,7 @@ export function PatientChart({
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: !minimal,
-        position: "top" as const,
-        labels: { usePointStyle: true, boxWidth: 8 },
+        display: false, // legend hidden per request (no top dots for Systolic/Diastolic)
       },
       title: { display: false },
       tooltip: { mode: "index" as const, intersect: false },

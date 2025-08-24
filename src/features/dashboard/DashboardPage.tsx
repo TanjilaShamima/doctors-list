@@ -66,14 +66,11 @@ export default function DashboardPage() {
               <h2 className="text-[17px] md:text-[18px] font-semibold tracking-tight text-slate-900">
                 {DASHBOARD_TEXT.diagnosisHistoryTitle}
               </h2>
-              <p className="text-[12px] text-slate-500 max-w-md">
-                {DASHBOARD_TEXT.diagnosisHistoryDescription}
-              </p>
             </div>
-            <button className="text-[11px] inline-flex items-center gap-1 rounded-full bg-slate-100 hover:bg-slate-200 px-3 py-1 font-medium text-slate-600">
+            {/* <button className="text-[11px] inline-flex items-center gap-1 rounded-full bg-slate-100 hover:bg-slate-200 px-3 py-1 font-medium text-slate-600">
               {DASHBOARD_TEXT.lastMonthsLabel}{" "}
               <span className="text-[10px]">▼</span>
-            </button>
+            </button> */}
           </header>
           <BloodPressureHistory parsed={parsed} />
           <div className="grid md:grid-cols-3 gap-5">
