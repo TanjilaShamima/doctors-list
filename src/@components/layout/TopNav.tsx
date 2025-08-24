@@ -8,6 +8,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import setting from '@/@assets/setting.png';
 import more from '@/@assets/more.png';
+import { t } from "@/lib/i18n";
+import type { FlattenedKeys } from "@/lib/i18n";
 
 // Items provided via @contents/navigation
 
@@ -18,7 +20,7 @@ function TopNavInner() {
   const currentFullHref =
     pathname + (searchParams.size ? `?${searchParams.toString()}` : "");
   const isActive = (item: NavItem) => {
-    if (!tab && pathname === "/" && item.label === "Patients") return true;
+    if (!tab && pathname === "/" && item.labelKey === "navigation.patients") return true;
     return item.href === currentFullHref;
   };
   return (
@@ -41,14 +43,14 @@ function TopNavInner() {
                   <span className="inline-flex items-center justify-center w-4 h-4">
                     <Image
                       src={item.icon}
-                      alt={item.label}
+                      alt={t(item.labelKey as FlattenedKeys)}
                       width={16}
                       height={16}
                     />
                   </span>
                 )}
                 <span className="ml-1 text-brand-deep font-bold text-sm">
-                  {item.label}
+                  {t(item.labelKey as FlattenedKeys)}
                 </span>
               </Link>
             </li>
@@ -61,7 +63,7 @@ function TopNavInner() {
 
 export function TopNav() {
   return (
-    <nav className="flex items-center gap-8 w-full rounded-full bg-white px-4 lg:px-6 h-20 shadow-sm border">
+    <nav className="flex items-center gap-8 w-full">
       <div className="flex items-center gap-2 min-w-[200px]">
         <Image
           src={Logo}
@@ -74,18 +76,18 @@ export function TopNav() {
       <Suspense
         fallback={
           <div className="text-xs text-gray-500 ml-auto mr-auto">
-            Loading nav…
+            {t('common.loading')}
           </div>
         }
       >
         <TopNavInner />
       </Suspense>
       <div className="flex items-center gap-4 ml-auto">
-        <div className="flex items-center gap-3 pr-4 border-r">
+        <div className="flex items-center gap-3 pr-4 border-r border-gray-200">
           <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-200">
             <Image
               src={ProfileImage}
-              alt="doctor"
+              alt={t('doctor.name')}
               width={40}
               height={40}
               className="object-cover"
@@ -93,29 +95,31 @@ export function TopNav() {
           </div>
           <div className="leading-tight">
             <p className="text-sm text-brand-deep font-bold">
-              Dr. Jose Simmons
+              {t('doctor.name')}
             </p>
-            <p className="text-sm text-brand-deep">General Practitioner</p>
+            <p className="text-sm text-brand-deep">
+              {t('doctor.title')}
+            </p>
           </div>
         </div>
         <button
-          aria-label="Settings"
-          className="flex items-center justify-center text-gray-600"
+          aria-label={t('aria.settings')}
+          className="flex items-center justify-center text-gray-600 hover:text-brand-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-teal focus-visible:ring-offset-2 rounded-md p-1"
         >
           <Image
             src={setting}
-            alt="Settings"
+            alt={t('aria.settings')}
             width={20}
             height={20}
           />
         </button>
         <button
-          aria-label="More"
-          className="flex items-center justify-center text-brand-deep"
+          aria-label={t('aria.more')}
+          className="flex items-center justify-center text-brand-deep hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-teal focus-visible:ring-offset-2 rounded-md p-1"
         >
           <Image
             src={more}
-            alt="More"
+            alt={t('aria.more')}
             width={3}
             height={20}
           />

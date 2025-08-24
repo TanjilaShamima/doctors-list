@@ -8,7 +8,6 @@ import { DiagnosticList } from "@/@components/PatientHistory/DiagnosticList";
 import { LabResultsPanel } from "@/@components/PatientHistory/LabResultsPanel";
 import { PatientProfilePanel } from "@/@components/PatientHistory/PatientProfilePanel";
 import { SidebarPatientList } from "@/@components/SidebarPatient/SidebarPatientList";
-import { DASHBOARD_TEXT } from "@/@contents/dashboardText";
 import { usePatientStore } from "@/@stores/patientStore";
 import type { DiagnosisHistoryPoint } from "@/@types/patient";
 import {
@@ -18,6 +17,7 @@ import {
 } from "@/@utils/vitals";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { t } from "@/lib/i18n";
 
 export default function DashboardPage() {
   const { selected, ensureSelected } = usePatientStore();
@@ -51,6 +51,7 @@ export default function DashboardPage() {
 
   console.log("parsed", parsed);
 
+  // Height tracking for responsive behavior 
   const [shortH, setShortH] = useState(false);
   useEffect(() => {
     const update = () => setShortH(window.innerHeight < 780);
@@ -59,15 +60,15 @@ export default function DashboardPage() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
+  // May be used for responsive adjustments in the future
+  console.log("Short height mode:", shortH);
+
 //   const asideHeightClass = shortH
 //     ? "h-[calc(100vh-120px)]"
 //     : "h-[calc(100vh-160px)]"; // matches left sidebar baseline
 
   return (
-    <div
-      className="grid gap-6 xl:gap-8 w-full 2xl:gap-10"
-      style={{ gridTemplateColumns: "280px 1fr 300px" }}
-    >
+    <div className="grid gap-6 xl:gap-8 w-full 2xl:gap-10 dashboard-grid">
       <aside className="hidden lg:flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm h-[calc(100vh-160px)] sticky top-28 overflow-hidden">
         <SidebarPatientList />
       </aside>
@@ -76,35 +77,35 @@ export default function DashboardPage() {
           <header className="flex items-start justify-between">
             <div className="space-y-1">
               <h2 className="text-base md:text-2xl font-semibold tracking-tight text-brand-deep">
-                {DASHBOARD_TEXT.diagnosisHistoryTitle}
+                {t('dashboard.diagnosisHistoryTitle')}
               </h2>
             </div>
           </header>
           <BloodPressureHistory parsed={parsed} />
           <div className="grid md:grid-cols-3 gap-5">
             <KPICard
-              title={DASHBOARD_TEXT.metrics.respiratory}
+              title={t('metrics.respiratory')}
               value={latestResp != null ? `${latestResp} bpm` : "—"}
               subtitle={respiratoryStatus}
               tone="blue"
-              media={<Image src={Respiratory} alt="Respiratory Rate" />}
-              className="bg-[#E0F3FA]"
+              media={<Image src={Respiratory} alt={t('metrics.respiratory')} />}
+              className="bg-kpi-respiratory"
             />
             <KPICard
-              title={DASHBOARD_TEXT.metrics.temperature}
+              title={t('metrics.temperature')}
               value={latestTemp != null ? `${latestTemp.toFixed(1)}°F` : "—"}
               subtitle={tempStatus}
               tone="red"
-              className="bg-[#FFE6E9]"
-              media={<Image src={Temperature} alt="Temperature" />}
+              className="bg-kpi-temperature"
+              media={<Image src={Temperature} alt={t('metrics.temperature')} />}
             />
             <KPICard
-              title={DASHBOARD_TEXT.metrics.heart}
+              title={t('metrics.heart')}
               value={latestHeart != null ? `${latestHeart} bpm` : "—"}
               subtitle={heartStatus}
-              media={<Image src={Heart} alt="Heart Rate" />}
+              media={<Image src={Heart} alt={t('metrics.heart')} />}
               tone="pink"
-              className="bg-[#FFE6F1]"
+              className="bg-kpi-heart"
             />
           </div>
         </div>

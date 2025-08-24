@@ -7,15 +7,15 @@ import Credit from '@/@assets/credit.png';
 import type { StaticImageData } from "next/image";
 
 export interface NavItem {
-    label: string;
+    labelKey: string; // i18n key instead of hardcoded label
     href: string;
     icon?: StaticImageData; // imported image icon
 }
 
 export const NAV_ITEMS: NavItem[] = [
-    { label: "Overview", href: "/?tab=overview", icon: Home },
-    { label: "Patients", href: "/", icon: Group },
-    { label: "Schedule", href: "/?tab=schedule", icon: Calender },
-    { label: "Message", href: "/?tab=message", icon: Message },
-    { label: "Transactions", href: "/?tab=transactions", icon: Credit },
+    { labelKey: "navigation.home", href: "/?tab=overview", icon: Home },
+    { labelKey: "navigation.patients", href: "/", icon: Group },
+    { labelKey: "navigation.schedule", href: "/?tab=schedule", icon: Calender },
+    { labelKey: "navigation.message", href: "/?tab=message", icon: Message },
+    { labelKey: "navigation.transactions", href: "/?tab=transactions", icon: Credit },
 ];

@@ -1,5 +1,6 @@
 import type { DiagnosisHistoryPoint } from "@/@types/patient";
 import type { BloodPressureSummary, ParsedPoint, VitalStatuses } from "@/@types/vitals";
+import { t } from "@/lib/i18n";
 
 // Helper: coerce possible string/number/object-with-value into number
 interface ValueHolder { value?: unknown }
@@ -91,8 +92,8 @@ export function summarizeBloodPressure(points: ParsedPoint[]): BloodPressureSumm
     const systolic = points.map((p) => p.sys);
     const diastolic = points.map((p) => p.dia);
     const datasets = [
-        { label: "Systolic", data: systolic, color: "#E66FD2" }, // updated color
-        { label: "Diastolic", data: diastolic, color: "#8C6FE6" }, // updated color
+        { label: t('dashboard.systolicLabel'), data: systolic, color: "#E66FD2" },
+        { label: t('dashboard.diastolicLabel'), data: diastolic, color: "#8C6FE6" },
     ];
     return { labels, systolic, diastolic, datasets };
 }
@@ -108,27 +109,27 @@ export function latestValue(points: ParsedPoint[], selector: (p: ParsedPoint) =>
 export function deriveVitalStatuses(latestResp: number | null, latestTemp: number | null, latestHeart: number | null): VitalStatuses {
     const respiratoryStatus =
         latestResp == null
-            ? "No data"
+            ? t('vitals.status.noData')
             : latestResp < 12
-                ? "Low"
+                ? t('vitals.status.low')
                 : latestResp > 20
-                    ? "High"
-                    : "Normal";
+                    ? t('vitals.status.high')
+                    : t('vitals.status.normal');
     const tempStatus =
         latestTemp == null
-            ? "No data"
+            ? t('vitals.status.noData')
             : latestTemp < 97
-                ? "Low"
+                ? t('vitals.status.low')
                 : latestTemp > 99
-                    ? "High"
-                    : "Normal";
+                    ? t('vitals.status.high')
+                    : t('vitals.status.normal');
     const heartStatus =
         latestHeart == null
-            ? "No data"
+            ? t('vitals.status.noData')
             : latestHeart < 60
-                ? "Lower than Average"
+                ? t('vitals.status.lowerThanAverage')
                 : latestHeart > 100
-                    ? "Higher than Average"
-                    : "Normal";
+                    ? t('vitals.status.higherThanAverage')
+                    : t('vitals.status.normal');
     return { respiratoryStatus, tempStatus, heartStatus };
 }
