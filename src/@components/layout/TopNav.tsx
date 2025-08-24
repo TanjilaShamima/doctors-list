@@ -61,7 +61,7 @@ function TopNavInner() {
 
 export function TopNav() {
   return (
-    <nav className="flex items-center gap-8 w-full rounded-full bg-white px-4 lg:px-6 h-20 shadow-sm border">
+    <nav className="flex items-center gap-8 w-full rounded-full px-4 lg:px-6 h-20">
       <div className="flex items-center gap-2 min-w-[200px]">
         <Image
           src={Logo}
