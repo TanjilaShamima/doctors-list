@@ -91,11 +91,11 @@ export function TopNav() {
               className="object-cover"
             />
           </div>
-          <div className="hidden sm:block leading-tight">
+          <div className="leading-tight">
             <p className="text-sm text-brand-deep font-bold">
               Dr. Jose Simmons
             </p>
-            <p className="text-sm text-gray-mid">General Practitioner</p>
+            <p className="text-sm text-brand-deep">General Practitioner</p>
           </div>
         </div>
         <button

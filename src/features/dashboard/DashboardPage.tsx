@@ -59,9 +59,9 @@ export default function DashboardPage() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  const asideHeightClass = shortH
-    ? "h-[calc(100vh-120px)]"
-    : "h-[calc(100vh-160px)]"; // matches left sidebar baseline
+//   const asideHeightClass = shortH
+//     ? "h-[calc(100vh-120px)]"
+//     : "h-[calc(100vh-160px)]"; // matches left sidebar baseline
 
   return (
     <div

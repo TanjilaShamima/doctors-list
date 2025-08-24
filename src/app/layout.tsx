@@ -28,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
-        <div className="mx-auto max-w-[1500px] flex flex-col min-h-screen px-3 md:px-6 py-3 gap-4">
+        <div className="mx-auto max-w-[1568px] flex flex-col min-h-screen px-3 md:px-6 py-3 gap-4">
           <div className="sticky top-3 z-20">
             <TopNav />
           </div>
