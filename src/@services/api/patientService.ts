@@ -28,7 +28,6 @@ async function fetchJSON<T>(url: string): Promise<T> {
     const headers: Record<string, string> = {};
     if (auth) headers.Authorization = auth;
     const res = await fetch(url, { headers, cache: "no-store" });
-    console.log("res", res)
     if (!res.ok) {
         const text = await res.text();
         throw new Error(`Request failed ${res.status}: ${text}`);
@@ -56,7 +55,6 @@ function mapPatient(raw: RawPatient): Patient {
 
 export async function fetchAllPatients(): Promise<Patient[]> {
     const data = await fetchJSON<RawPatient[]>(BASE_URL);
-    console.log("data", data);
     return data.map(mapPatient);
 }
 

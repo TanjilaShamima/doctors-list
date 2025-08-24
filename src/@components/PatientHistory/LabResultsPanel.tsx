@@ -1,9 +1,12 @@
+import { Skeleton } from "@/@components/common/Skeleton";
+import { MESSAGES } from "@/@contents/messages";
+import { UI_LABELS } from "@/@contents/ui";
 import { usePatientStore } from "@/@stores/patientStore";
 import { Download } from "lucide-react";
 import { useMemo } from "react";
 
 export function LabResultsPanel() {
-  const { selected } = usePatientStore();
+  const { selected, loading, initialized } = usePatientStore();
 
   const labs = useMemo(
     () => selected?.lab_results || [],
@@ -13,16 +16,33 @@ export function LabResultsPanel() {
   return (
     <div className="flex flex-col h-full px-5 py-8">
       <div className="pb-4 font-semibold text-gray-800 text-sm">
-        <h2 className="text-base md:text-2xl font-semibold tracking-tight text-brand-deep">
-          Lab Results
-        </h2>
+        {(!initialized || loading) && !selected ? (
+          <Skeleton className="h-6 w-40" />
+        ) : (
+          <h2 className="text-base md:text-2xl font-semibold tracking-tight text-brand-deep">
+            {UI_LABELS.labResults}
+          </h2>
+        )}
       </div>
-      {(!selected || !labs.length) && (
+      {(!initialized || loading) && !selected && (
+        <ul className="flex-1 overflow-y-auto divide-y divide-gray-100">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <li
+              key={i}
+              className="flex items-center justify-between px-4 py-2.5"
+            >
+              <Skeleton className="h-4 w-2/3" />
+              <Skeleton className="h-4 w-6" />
+            </li>
+          ))}
+        </ul>
+      )}
+      {initialized && !loading && (!selected || !labs.length) && (
         <div className="px-4 py-6 text-xs text-brand-deep">
-          No lab results available.
+          {MESSAGES.emptyLabResults}
         </div>
       )}
-      {labs.length > 0 && (
+      {initialized && !loading && labs.length > 0 && (
         <ul className="flex-1 overflow-y-auto divide-y divide-gray-100">
           {labs.map((lab, index) => (
             <li

@@ -1,12 +1,8 @@
 "use client";
+import { Skeleton } from "@/@components/common/Skeleton";
 import { PROFILE_LABELS } from "@/@contents/profileFields";
 import { usePatientStore } from "@/@stores/patientStore";
-import {
-  Calendar,
-  Phone,
-  ShieldCheck,
-  Venus,
-} from "lucide-react";
+import { Calendar, Phone, ShieldCheck, Venus } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
 
@@ -17,7 +13,28 @@ export function PatientProfilePanel() {
   }, [ensureSelected]);
   const patient = selected;
   if (!patient)
-    return <div className="p-6 text-sm text-gray-500">Loading...</div>;
+    return (
+      <div className="flex flex-col h-auto px-5 pt-8 pb-5 animate-pulse">
+        <div className="flex flex-col items-center pb-6">
+          <Skeleton className="h-28 w-28 rounded-full" />
+          <Skeleton className="mt-5 h-5 w-40" />
+        </div>
+        <div className="space-y-5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <Skeleton className="h-10 w-10 rounded-full" />
+              <div className="flex-1 space-y-2 pt-1">
+                <Skeleton className="h-3 w-24" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="px-6 pb-6 mt-8">
+          <Skeleton className="h-10 w-full rounded-full" />
+        </div>
+      </div>
+    );
   const fullName = `${patient.name}`;
   return (
     <div className="flex flex-col h-auto px-5 py-5">

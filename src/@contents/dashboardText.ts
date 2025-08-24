@@ -12,4 +12,5 @@ export const DASHBOARD_TEXT = {
         temperature: "Temperature",
         heart: "Heart Rate",
     },
+    footer: '@{year} - Patient Dashboard - Tech.care'
 };

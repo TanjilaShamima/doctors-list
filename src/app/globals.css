@@ -87,3 +87,10 @@ body::-webkit-scrollbar-thumb:hover,
   scrollbar-width: thin;
   scrollbar-color: #072635 transparent;
 }
+
+/* Skeleton shimmer keyframes (moved from runtime injection) */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

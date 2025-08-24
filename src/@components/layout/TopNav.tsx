@@ -1,13 +1,13 @@
 "use client";
 import Logo from "@/@assets/logo.svg";
+import more from "@/@assets/more.png";
 import ProfileImage from "@/@assets/profile-placeholder.png";
+import setting from "@/@assets/setting.png";
 import { NAV_ITEMS, NavItem } from "@/@contents/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import setting from '@/@assets/setting.png';
-import more from '@/@assets/more.png';
 
 // Items provided via @contents/navigation
 
@@ -61,7 +61,7 @@ function TopNavInner() {
 
 export function TopNav() {
   return (
-    <nav className="flex items-center gap-8 w-full rounded-full bg-white px-4 lg:px-6 h-20 shadow-sm border">
+    <nav className="flex items-center gap-8 w-full rounded-full px-4 lg:px-6 h-20">
       <div className="flex items-center gap-2 min-w-[200px]">
         <Image
           src={Logo}
@@ -71,13 +71,7 @@ export function TopNav() {
           className="h-10 w-auto rounded-full object-cover"
         />
       </div>
-      <Suspense
-        fallback={
-          <div className="text-xs text-gray-500 ml-auto mr-auto">
-            Loading nav…
-          </div>
-        }
-      >
+      <Suspense fallback={null}>
         <TopNavInner />
       </Suspense>
       <div className="flex items-center gap-4 ml-auto">
@@ -100,25 +94,15 @@ export function TopNav() {
         </div>
         <button
           aria-label="Settings"
-          className="flex items-center justify-center text-gray-600"
+          className="flex items-center justify-center text-brand-deep cursor-pointer"
         >
-          <Image
-            src={setting}
-            alt="Settings"
-            width={20}
-            height={20}
-          />
+          <Image src={setting} alt="Settings" width={20} height={20} />
         </button>
         <button
           aria-label="More"
-          className="flex items-center justify-center text-brand-deep"
+          className="flex items-center justify-center text-brand-deep cursor-pointer"
         >
-          <Image
-            src={more}
-            alt="More"
-            width={3}
-            height={20}
-          />
+          <Image src={more} alt="More" width={3} height={20} />
         </button>
       </div>
     </nav>
