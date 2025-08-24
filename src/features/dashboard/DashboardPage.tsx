@@ -50,8 +50,6 @@ export default function DashboardPage() {
     [latestResp, latestTemp, latestHeart]
   );
 
-  console.log("parsed", parsed);
-
   // (Removed dynamic height adjustment logic to simplify; reintroduce if needed.)
 
   //   const asideHeightClass = shortH

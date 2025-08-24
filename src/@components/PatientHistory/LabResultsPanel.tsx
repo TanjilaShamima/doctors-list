@@ -1,4 +1,6 @@
 import { Skeleton } from "@/@components/common/Skeleton";
+import { MESSAGES } from "@/@contents/messages";
+import { UI_LABELS } from "@/@contents/ui";
 import { usePatientStore } from "@/@stores/patientStore";
 import { Download } from "lucide-react";
 import { useMemo } from "react";
@@ -18,7 +20,7 @@ export function LabResultsPanel() {
           <Skeleton className="h-6 w-40" />
         ) : (
           <h2 className="text-base md:text-2xl font-semibold tracking-tight text-brand-deep">
-            Lab Results
+            {UI_LABELS.labResults}
           </h2>
         )}
       </div>
@@ -37,7 +39,7 @@ export function LabResultsPanel() {
       )}
       {initialized && !loading && (!selected || !labs.length) && (
         <div className="px-4 py-6 text-xs text-brand-deep">
-          No lab results available.
+          {MESSAGES.emptyLabResults}
         </div>
       )}
       {initialized && !loading && labs.length > 0 && (

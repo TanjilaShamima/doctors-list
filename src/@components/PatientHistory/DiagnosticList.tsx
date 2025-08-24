@@ -1,4 +1,5 @@
 import { Skeleton } from "@/@components/common/Skeleton";
+import { UI_LABELS } from "@/@contents/ui";
 import { usePatientStore } from "@/@stores/patientStore";
 import { useMemo } from "react";
 
@@ -15,7 +16,7 @@ export function DiagnosticList() {
         {(!initialized || loading) && !diagnosticList.length ? (
           <Skeleton className="h-7 w-48" />
         ) : (
-          "Diagnostic List"
+          UI_LABELS.diagnosticList
         )}
       </div>
       <div className="flex-1 overflow-y-auto">

@@ -1,6 +1,8 @@
 "use client";
 import search from "@/@assets/search.png";
 import { Skeleton } from "@/@components/common/Skeleton";
+import { MESSAGES } from "@/@contents/messages";
+import { UI_LABELS } from "@/@contents/ui";
 import { usePatientStore } from "@/@stores/patientStore";
 import { Search, X } from "lucide-react";
 import Image from "next/image";
@@ -46,7 +48,7 @@ export function SidebarPatientList() {
           {(!initialized || loading) && !patients.length ? (
             <Skeleton className="h-7 w-32 rounded" />
           ) : (
-            "Patients"
+            UI_LABELS.patients
           )}
         </div>
         <button
@@ -104,7 +106,7 @@ export function SidebarPatientList() {
           ))}
         {!loading && initialized && !filtered.length && (
           <li className="px-4 py-4 text-xs text-gray-500">
-            No patients found.
+            {MESSAGES.emptyPatients}
           </li>
         )}
       </ul>
