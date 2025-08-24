@@ -13,7 +13,7 @@ export const usePatientStore = create<PatientState>((set, get) => ({
             const list = await fetchAllPatients();
             set({ patients: list, loading: false, initialized: true });
             // If nothing selected yet, default to Jessica
-            const jess = list.find(p => `${p.first_name} ${p.last_name}`.toLowerCase() === 'jessica taylor');
+            const jess = list.find(p => `${p.name}`.toLowerCase() === 'jessica taylor');
             if (!get().selectedId && jess) {
                 set({ selectedId: jess.id, selected: jess });
             }

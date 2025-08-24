@@ -1,12 +1,14 @@
 // Domain patient-related data models
+
+type VitalSign = { levels: string; value: number | string };
+
 export interface DiagnosisHistoryPoint {
-    month: string; // e.g. "Oct, 2023"
-    systolic?: number;
-    diastolic?: number;
-    respiratory_rate?: number;
-    temperature?: number;
-    heart_rate?: number;
-    [key: string]: unknown;
+    month: string; // e.g. "Oct"
+    year: string; // e.g. "2023"
+    respiratory_rate?: VitalSign;
+    temperature?: VitalSign;
+    heart_rate?: VitalSign;
+    blood_pressure?: { systolic: VitalSign; diastolic: VitalSign };
 }
 
 export interface DiagnosticListItem {
@@ -21,7 +23,7 @@ export interface LabResultCategory {
 }
 
 export interface RawPatient {
-    id?: string;
+    id: string;
     name: string; // full name
     gender?: string;
     age?: number;
@@ -29,26 +31,25 @@ export interface RawPatient {
     phone_number?: string;
     emergency_contact?: string;
     insurance_type?: string;
-    diagnosis_history?: unknown[]; // structure not guaranteed from API
-    diagnostic_list?: unknown[];
-    lab_results?: unknown[];
+    diagnosis_history?: DiagnosisHistoryPoint[]; // structure not guaranteed from API
+    diagnostic_list?: DiagnosticListItem[];
+    lab_results?: string[];
     profile_picture?: string;
     [key: string]: unknown;
 }
 
 export interface Patient {
     id: string;
-    first_name: string;
-    last_name: string;
+    name: string; // full name
     gender?: string;
-    date_of_birth?: string;
     age?: number;
+    date_of_birth?: string;
     phone_number?: string;
     emergency_contact?: string;
     insurance_type?: string;
-    diagnosis_history?: DiagnosisHistoryPoint[];
+    diagnosis_history?: DiagnosisHistoryPoint[]; // structure not guaranteed from API
     diagnostic_list?: DiagnosticListItem[];
-    lab_results?: LabResultCategory[];
+    lab_results?: string[];
     profile_picture?: string;
     raw?: RawPatient; // original untransformed record
 }

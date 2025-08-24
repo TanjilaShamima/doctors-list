@@ -19,7 +19,7 @@ export function PatientProfilePanel() {
   const patient = selected;
   if (!patient)
     return <div className="p-6 text-sm text-gray-500">Loading...</div>;
-  const fullName = `${patient.first_name} ${patient.last_name}`;
+  const fullName = `${patient.name}`;
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-col items-center p-6 pb-4">

@@ -49,6 +49,8 @@ export default function DashboardPage() {
     [latestResp, latestTemp, latestHeart]
   );
 
+  console.log("parsed", parsed);
+
   return (
     <div
       className="grid gap-6 xl:gap-8 w-full 2xl:gap-10"

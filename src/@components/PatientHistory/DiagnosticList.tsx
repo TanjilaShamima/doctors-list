@@ -1,7 +1,14 @@
-import { DIAGNOSTIC_SAMPLE } from "@/@contents/diagnostics";
+import { usePatientStore } from "@/@stores/patientStore";
 import { Activity, AlertCircle, CheckCircle2, ShieldCheck } from "lucide-react";
+import { useMemo } from "react";
 
 export function DiagnosticList() {
+  const { selected } = usePatientStore();
+
+  const diagnosticList = useMemo(
+    () => selected?.diagnostic_list || [],
+    [selected?.diagnostic_list]
+  );
   return (
     <div className="flex flex-col h-full">
       <div className="text-sm font-semibold text-gray-800 p-4 pb-2">
@@ -17,7 +24,7 @@ export function DiagnosticList() {
             </tr>
           </thead>
           <tbody>
-            {DIAGNOSTIC_SAMPLE.map((item) => {
+            {diagnosticList.map((item) => {
               const statusIcon =
                 item.status === "Cured" ? (
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
@@ -30,12 +37,12 @@ export function DiagnosticList() {
                 );
               return (
                 <tr
-                  key={item.problem}
+                  key={item.name}
                   className="border-t border-gray-100 hover:bg-gray-50"
                 >
                   <td className="px-4 py-2 font-medium text-gray-800 flex items-center gap-2">
                     {statusIcon}
-                    {item.problem}
+                    {item.name}
                   </td>
                   <td className="px-4 py-2 text-gray-600">
                     {item.description}

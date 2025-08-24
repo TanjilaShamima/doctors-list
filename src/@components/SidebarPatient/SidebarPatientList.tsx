@@ -27,7 +27,7 @@ export function SidebarPatientList() {
     if (!query) return patients;
     const q = query.toLowerCase();
     return patients.filter((p) =>
-      `${p.first_name} ${p.last_name}`.toLowerCase().includes(q)
+      `${p.name}`.toLowerCase().includes(q)
     );
   }, [patients, query]);
 

@@ -25,21 +25,20 @@ export const SidebarPatientItem: React.FC<SidebarPatientItemProps> = ({
         {patient.profile_picture ? (
           <Image
             src={patient.profile_picture}
-            alt={`${patient.first_name} ${patient.last_name}`}
+            alt={`${patient.name}`}
             width={40}
             height={40}
             className="object-cover"
           />
         ) : (
           <span>
-            {patient.first_name.charAt(0)}
-            {patient.last_name.charAt(0)}
+            {patient.name.charAt(0)}
           </span>
         )}
       </div>
       <div className="flex flex-col flex-1 min-w-0">
         <span className="font-medium truncate text-gray-800">
-          {patient.first_name} {patient.last_name}
+          {patient.name}
         </span>
         <span className="text-[11px] text-gray-500 truncate">
           {patient.gender || "—"},{" "}

@@ -33,7 +33,7 @@ export function TopNav() {
           className="h-10 w-auto rounded-full object-cover"
         />
       </div>
-      <ul className="hidden md:flex items-center gap-1 flex-1">
+      <ul className="hidden md:flex items-center gap-1 mx-auto">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item);
           return (

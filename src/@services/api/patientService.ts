@@ -37,12 +37,9 @@ async function fetchJSON<T>(url: string): Promise<T> {
 }
 
 function mapPatient(raw: RawPatient): Patient {
-    const [first_name, ...rest] = raw.name.split(" ");
-    const last_name = rest.join(" ") || "";
     return {
         id: raw.id || raw.name, // fallback if id missing
-        first_name,
-        last_name,
+        name: raw.name,
         gender: raw.gender,
         date_of_birth: raw.date_of_birth,
         age: raw.age,
@@ -51,7 +48,7 @@ function mapPatient(raw: RawPatient): Patient {
         insurance_type: raw.insurance_type,
         diagnosis_history: raw.diagnosis_history as DiagnosisHistoryPoint[] | undefined,
         diagnostic_list: raw.diagnostic_list as DiagnosticListItem[] | undefined,
-        lab_results: raw.lab_results as LabResultCategory[] | undefined,
+        lab_results: raw.lab_results as string[] | undefined,
         profile_picture: raw.profile_picture,
         raw,
     };
@@ -65,10 +62,10 @@ export async function fetchAllPatients(): Promise<Patient[]> {
 
 export async function fetchJessica(): Promise<Patient | undefined> {
     const patients = await fetchAllPatients();
-    return patients.find(p => `${p.first_name} ${p.last_name}`.toLowerCase() === "jessica taylor");
+    return patients.find(p => `${p.name}`.toLowerCase() === "jessica taylor");
 }
 
 export async function fetchPatientByIdOrName(idOrName: string): Promise<Patient | undefined> {
     const patients = await fetchAllPatients();
-    return patients.find(p => p.id === idOrName || `${p.first_name} ${p.last_name}`.toLowerCase() === idOrName.toLowerCase());
+    return patients.find(p => p.id === idOrName || `${p.name}`.toLowerCase() === idOrName.toLowerCase());
 }
