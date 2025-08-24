@@ -2,6 +2,54 @@
 
 A responsive patient dashboard built with Next.js (App Router) and TypeScript. It visualizes a single patient's historical vital signs, diagnoses and laboratory results with a design modeled after a clinical admin interface. The default loaded patient is Jessica (can be changed via the patient list). State, data shaping and chart rendering are implemented with a small, modular architecture for clarity and extensibility.
 
+## Quick Start (Installation & Run Flow)
+
+Prerequisites:
+
+- Node.js 20+ (Next.js 15 & Tailwind v4 features assume a modern runtime)
+- npm (bundled with Node) or pnpm/yarn if you prefer (examples use npm)
+
+Steps:
+
+1. Clone repository
+   ```bash
+   git clone <repo-url>
+   cd patient-record-app
+   ```
+2. Install dependencies
+   ```bash
+   npm install
+   ```
+3. Start development server (Turbopack)
+   ```bash
+   npm run dev
+   ```
+   Visit http://localhost:3000
+4. Type checking & lint (optional during dev)
+   ```bash
+   npm run lint
+   ```
+5. Production build & start
+   ```bash
+   npm run build
+   npm start
+   ```
+
+Scripts Overview:
+
+- `dev` – Start Next.js (Turbopack) in dev mode
+- `build` – Production build
+- `start` – Run built app
+- `lint` – ESLint over source
+
+Deployment Flow (generic):
+
+1. `npm ci`
+2. `npm run build`
+3. `npm start` (or deploy `.next`/.output depending on target platform)
+
+No environment variables required currently.
+
 ## Core Features
 
 1. Patient selection sidebar with persistent currently selected patient (Zustand store).
@@ -24,19 +72,28 @@ A responsive patient dashboard built with Next.js (App Router) and TypeScript. I
 ## Project Structure (Selected)
 
 ```
-src/
-	@assets/              # Static images / icons (imported via next/image)
-	@components/          # Reusable presentational & composite components
-		layout/             # Top navigation, layout shell pieces
-		PatientHistory/     # Chart, vitals, diagnostic list, lab panels
-		SidebarPatient/     # Patient list and related UI
-		common/             # Shared UI primitives (e.g., KPI card)
-	@contents/            # Static text/content constants
-	@services/            # (Reserved) data fetching or integration services
-	@stores/              # Zustand stores (patient selection)
-	@types/               # Domain TypeScript type definitions
-	@utils/               # Pure utility modules (vitals parsing, summarization)
-	app/                  # Next.js App Router entrypoints (`layout.tsx`, pages)
+.
+├── eslint.config.mjs
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── tsconfig.json
+├── public/                # Static public assets
+├── src/
+│   ├── @assets/           # Images & icons
+│   ├── @components/
+│   │   ├── common/        # UI primitives (Skeleton, KPI card)
+│   │   ├── layout/        # Layout & navigation (TopNav, Header)
+│   │   ├── PatientHistory/# Patient-centric panels (chart, diagnostics, labs, profile)
+│   │   └── SidebarPatient/# Patient list & sidebar items
+│   ├── @contents/         # Centralized text constants / labels
+│   ├── @services/         # API service modules (patientService)
+│   ├── @stores/           # Zustand stores (patientStore)
+│   ├── @types/            # Domain types (patient, vitals, store)
+│   ├── @utils/            # Pure utilities (vitals parsing, status derivation)
+│   ├── app/               # Next.js App Router entry (layout.tsx, page.tsx)
+│   └── features/          # Feature-level composed pages (dashboard)
+└── README.md
 ```
 
 ## Data & Parsing
@@ -61,6 +118,24 @@ Color tokens and scrollbar styles are defined in `app/globals.css`. Custom media
 ## Chart Implementation
 
 The blood pressure chart uses two datasets (systolic and diastolic) with distinct brand-aligned colors. Labels on the x-axis are formatted as `Oct, 2023`. The chart component accepts filtered subsets of parsed points when the user changes the displayed range. Legend is removed for a cleaner compact card layout; axis tick styling (size and color) follows design specifications.
+
+## Loading Skeleton Strategy
+
+The UI shows a comprehensive skeleton state before patient data resolves:
+
+- All textual headings, labels and static section titles display skeleton bars.
+- Sidebar patient list renders placeholder rows matching final layout dimensions.
+- Profile panel shows avatar circle + text line skeletons.
+- Diagnostics, lab results, chart card and KPI cards all reserve final space to eliminate CLS (cumulative layout shift).
+- A Zustand store exposes `loading` and `initialized` flags:
+  - `loading` – true during active fetch.
+  - `initialized` – set to true after first fetch attempt (success or fail) to swap from skeleton to empty-state messages if no data.
+  - This prevents flashing an empty state before data has had a chance to load.
+
+Implementation Notes:
+
+- `Skeleton` component uses a CSS keyframe shimmer (`@keyframes shimmer`) defined globally (no runtime style injection).
+- For reduced motion users, consider an enhancement adding a `(prefers-reduced-motion: reduce)` media query to disable the shimmer (future improvement).
 
 ## Accessibility Considerations
 
