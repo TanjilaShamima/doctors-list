@@ -1,3 +1,8 @@
+### Static Export (index.html in `out/`)
+
+If you generate a static export (e.g. using `next export` or a build script that outputs to `out/`), an `index.html` file will be present inside the `out/` directory. You can serve that folder with any static file server (Nginx, Apache, GitHub Pages, Netlify, etc.). Ensure all asset paths remain relative or configure your deployment base path accordingly.
+
+
 # Patient Record Application
 
 A responsive patient dashboard built with Next.js (App Router) and TypeScript. It visualizes a single patient's historical vital signs, diagnoses and laboratory results with a design modeled after a clinical admin interface. The default loaded patient is Jessica (can be changed via the patient list). State, data shaping and chart rendering are implemented with a small, modular architecture for clarity and extensibility.
@@ -197,6 +202,7 @@ No automated tests are included yet. Recommended future additions:
 ## Deployment
 
 The application can be deployed to any platform supporting a Next.js 15 runtime. A typical production pipeline performs the `build` step (Turbopack) followed by `start`. If deploying to Vercel, no configuration changes are required beyond repository import.
+
 
 ## License
 
