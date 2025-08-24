@@ -1,29 +1,5 @@
+import { DIAGNOSTIC_SAMPLE } from "@/@contents/diagnostics";
 import { Activity, AlertCircle, CheckCircle2, ShieldCheck } from "lucide-react";
-
-export interface DiagnosticItem {
-  problem: string;
-  description: string;
-  status: string;
-}
-
-// Placeholder static list until API mapping clarified
-const sample: DiagnosticItem[] = [
-  {
-    problem: "Hypertension",
-    description: "Chronic high blood pressure",
-    status: "Under Observation",
-  },
-  {
-    problem: "Type 2 Diabetes",
-    description: "Insulin resistance and elevated blood sugar",
-    status: "Cured",
-  },
-  {
-    problem: "Asthma",
-    description: "Recurrent episodes of bronchial constriction",
-    status: "Inactive",
-  },
-];
 
 export function DiagnosticList() {
   return (
@@ -41,7 +17,7 @@ export function DiagnosticList() {
             </tr>
           </thead>
           <tbody>
-            {sample.map((item) => {
+            {DIAGNOSTIC_SAMPLE.map((item) => {
               const statusIcon =
                 item.status === "Cured" ? (
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />

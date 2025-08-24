@@ -1,4 +1,5 @@
 "use client";
+import { PROFILE_LABELS } from "@/@contents/profileFields";
 import { usePatientStore } from "@/@stores/patientStore";
 import {
   Calendar,
@@ -36,7 +37,7 @@ export function PatientProfilePanel() {
       <div className="px-6 pb-6 space-y-4 text-sm">
         <InfoRow
           icon={<Calendar className="h-4 w-4" />}
-          label="Date Of Birth"
+          label={PROFILE_LABELS.dateOfBirth}
           value={
             patient.date_of_birth
               ? new Date(patient.date_of_birth).toLocaleDateString(undefined, {
@@ -49,28 +50,28 @@ export function PatientProfilePanel() {
         />
         <InfoRow
           icon={<UserRound className="h-4 w-4" />}
-          label="Gender"
+          label={PROFILE_LABELS.gender}
           value={patient.gender || "—"}
         />
         <InfoRow
           icon={<Phone className="h-4 w-4" />}
-          label="Contact Info."
+          label={PROFILE_LABELS.contact}
           value={patient.phone_number || "—"}
         />
         <InfoRow
           icon={<PhoneCall className="h-4 w-4" />}
-          label="Emergency Contacts"
+          label={PROFILE_LABELS.emergency}
           value={patient.emergency_contact || "—"}
         />
         <InfoRow
           icon={<ShieldCheck className="h-4 w-4" />}
-          label="Insurance Provider"
+          label={PROFILE_LABELS.insurance}
           value={patient.insurance_type || "—"}
         />
       </div>
       <div className="px-6 pb-6 mt-auto">
         <button className="w-full rounded-full bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium py-2 transition">
-          Show All Information
+          {PROFILE_LABELS.showAll}
         </button>
       </div>
     </div>

@@ -1,45 +1,5 @@
-import {
-  Download,
-  FileImage,
-  FileText,
-  FlaskConical,
-  ScanLine,
-  TestTube,
-} from "lucide-react";
-
-interface LabCategory {
-  name: string;
-  downloadable?: boolean;
-  icon?: React.ReactNode;
-}
-
-const labs: LabCategory[] = [
-  {
-    name: "Blood Tests",
-    downloadable: true,
-    icon: <FlaskConical className="h-4 w-4" />,
-  },
-  {
-    name: "CT Scans",
-    downloadable: true,
-    icon: <ScanLine className="h-4 w-4" />,
-  },
-  {
-    name: "Radiology Reports",
-    downloadable: true,
-    icon: <FileText className="h-4 w-4" />,
-  },
-  {
-    name: "X-Rays",
-    downloadable: true,
-    icon: <FileImage className="h-4 w-4" />,
-  },
-  {
-    name: "Urine Test",
-    downloadable: true,
-    icon: <TestTube className="h-4 w-4" />,
-  },
-];
+import { LAB_CATEGORIES } from "@/@contents/labs";
+import { Download } from "lucide-react";
 
 export function LabResultsPanel() {
   return (
@@ -48,14 +8,14 @@ export function LabResultsPanel() {
         Lab Results
       </div>
       <ul className="flex-1 overflow-y-auto divide-y divide-gray-100">
-        {labs.map((l) => (
+        {LAB_CATEGORIES.map((l) => (
           <li
             key={l.name}
             className="flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50"
           >
             <span className="truncate text-gray-700 flex items-center gap-2">
               <span className="h-7 w-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
-                {l.icon}
+                {l.Icon ? <l.Icon className="h-4 w-4" /> : null}
               </span>
               {l.name}
             </span>
