@@ -1,10 +1,16 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   /* config options here */
-  images: {
-    domains: ["fedskillstest.ct.digital"],
+  output: 'export',
+  experimental: {
+    appDir: true,
   },
+  images: {
+    unoptimized: true,
+    remotePatterns: [new URL("https://fedskillstest.ct.digital")],
+  },
+  assetPrefix: "./",
 };
 
 export default nextConfig;
