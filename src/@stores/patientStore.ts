@@ -1,18 +1,7 @@
 "use client";
-import { Patient, fetchAllPatients, fetchJessica, fetchPatientByIdOrName } from "@/@services/api/patientService";
+import { fetchAllPatients, fetchJessica, fetchPatientByIdOrName } from "@/@services/api/patientService";
+import type { PatientState } from "@/@types/store";
 import { create } from 'zustand';
-
-interface PatientState {
-    patients: Patient[];
-    loading: boolean;
-    error?: string;
-    selectedId?: string; // patient id or name key
-    selected?: Patient;
-    initialized: boolean;
-    loadPatients: () => Promise<void>;
-    selectPatient: (id: string) => void;
-    ensureSelected: () => Promise<void>;
-}
 
 export const usePatientStore = create<PatientState>((set, get) => ({
     patients: [],

@@ -1,7 +1,8 @@
 import { DASHBOARD_TEXT } from "@/@contents/dashboardText";
 import React, { useMemo } from "react";
 import { PatientChart } from "./PatientChart";
-import { ParsedPoint, summarizeBloodPressure } from "@/@utils/vitals";
+import { summarizeBloodPressure } from "@/@utils/vitals";
+import { ParsedPoint } from "@/@types/vitals";
 
 interface Props {
     parsed: ParsedPoint[];

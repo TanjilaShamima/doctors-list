@@ -1,14 +1,5 @@
-import { DiagnosisHistoryPoint } from "@/@services/api/patientService";
-
-export interface ParsedPoint {
-    label: string;
-    date: Date;
-    sys: number | null;
-    dia: number | null;
-    respiratory?: number | null;
-    temperature?: number | null;
-    heart?: number | null;
-}
+import type { DiagnosisHistoryPoint } from "@/@types/patient";
+import type { BloodPressureSummary, ParsedPoint, VitalStatuses } from "@/@types/vitals";
 
 export function parseDiagnosisHistory(history: DiagnosisHistoryPoint[] = []): ParsedPoint[] {
     const parsed: ParsedPoint[] = history
@@ -37,13 +28,6 @@ export function parseDiagnosisHistory(history: DiagnosisHistoryPoint[] = []): Pa
     return Array.from(lastByLabel.values());
 }
 
-export interface BloodPressureSummary {
-    labels: string[];
-    systolic: (number | null)[];
-    diastolic: (number | null)[];
-    datasets: { label: string; data: (number | null)[]; color: string }[];
-}
-
 export function summarizeBloodPressure(points: ParsedPoint[]): BloodPressureSummary {
     const labels = points.map((p) => p.label);
     const systolic = points.map((p) => p.sys);
@@ -61,12 +45,6 @@ export function latestValue(points: ParsedPoint[], selector: (p: ParsedPoint) =>
         if (typeof v === "number") return v;
     }
     return null;
-}
-
-export interface VitalStatuses {
-    respiratoryStatus: string;
-    tempStatus: string;
-    heartStatus: string;
 }
 
 export function deriveVitalStatuses(latestResp: number | null, latestTemp: number | null, latestHeart: number | null): VitalStatuses {

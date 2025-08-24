@@ -2,24 +2,22 @@
 import Heart from "@/@assets/HeartBPM.png";
 import Respiratory from "@/@assets/respiratoryRate.png";
 import Temperature from "@/@assets/temperature.png";
+import BloodPressureHistory from "@/@components/PatientHistory/BloodPressureHistory";
 import { DASHBOARD_TEXT } from "@/@contents/dashboardText";
-import { DiagnosisHistoryPoint } from "@/@services/api/patientService";
 import { usePatientStore } from "@/@stores/patientStore";
+import type { DiagnosisHistoryPoint } from "@/@types/patient";
 import {
   deriveVitalStatuses,
   latestValue,
   parseDiagnosisHistory,
-  summarizeBloodPressure,
 } from "@/@utils/vitals";
 import Image from "next/image";
 import { useEffect, useMemo } from "react";
-import { PatientChart } from "../../@components/PatientHistory/PatientChart";
 import { DiagnosticList } from "./components/DiagnosticList";
 import { KPICard } from "./components/KPICard";
 import { LabResultsPanel } from "./components/LabResultsPanel";
 import { PatientProfilePanel } from "./components/PatientProfilePanel";
 import { SidebarPatientList } from "./components/SidebarPatientList";
-import BloodPressureHistory from "@/@components/PatientHistory/BloodPressureHistory";
 
 export default function DashboardPage() {
   const { selected, ensureSelected } = usePatientStore();
@@ -75,7 +73,7 @@ export default function DashboardPage() {
               <span className="text-[10px]">▼</span>
             </button>
           </header>
-         <BloodPressureHistory parsed={parsed} />
+          <BloodPressureHistory parsed={parsed} />
           <div className="grid md:grid-cols-3 gap-5">
             <KPICard
               title={DASHBOARD_TEXT.metrics.respiratory}
