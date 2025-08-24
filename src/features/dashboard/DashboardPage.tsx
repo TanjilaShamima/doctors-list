@@ -13,11 +13,11 @@ import {
 } from "@/@utils/vitals";
 import Image from "next/image";
 import { useEffect, useMemo } from "react";
-import { DiagnosticList } from "./components/DiagnosticList";
-import { KPICard } from "./components/KPICard";
-import { LabResultsPanel } from "./components/LabResultsPanel";
-import { PatientProfilePanel } from "./components/PatientProfilePanel";
-import { SidebarPatientList } from "./components/SidebarPatientList";
+import { SidebarPatientList } from "@/@components/SidebarPatient/SidebarPatientList";
+import { DiagnosticList } from "@/@components/PatientHistory/DiagnosticList";
+import { KPICard } from "@/@components/common/KPICard";
+import { LabResultsPanel } from "@/@components/PatientHistory/LabResultsPanel";
+import { PatientProfilePanel } from "@/@components/PatientHistory/PatientProfilePanel";
 
 export default function DashboardPage() {
   const { selected, ensureSelected } = usePatientStore();

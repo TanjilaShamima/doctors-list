@@ -1,8 +1,8 @@
 "use client";
 import { usePatientStore } from "@/@stores/patientStore";
 import { Search, X } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { SidebarPatientItem } from "./SidebarPatientItem";
 
 export function SidebarPatientList() {
   const { patients, loadPatients, loading, selectedId, selectPatient, error } =
@@ -67,54 +67,14 @@ export function SidebarPatientList() {
           <li className="px-4 py-2 text-xs text-gray-500">Loading...</li>
         )}
         {!loading &&
-          filtered.map((p) => {
-            const selected = p.id === selectedId;
-            return (
-              <li
-                key={p.id}
-                onClick={() => selectPatient(p.id)}
-                className={`group relative pl-4 pr-2 py-2 flex items-center gap-3 cursor-pointer text-sm transition-colors ${
-                  selected ? "bg-teal-100" : "hover:bg-gray-50"
-                }`}
-              >
-                <div className="h-10 w-10 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-xs font-medium text-gray-600">
-                  {p.profile_picture ? (
-                    <Image
-                      src={p.profile_picture}
-                      alt={`${p.first_name} ${p.last_name}`}
-                      width={40}
-                      height={40}
-                      className="object-cover"
-                    />
-                  ) : (
-                    <span>
-                      {p.first_name.charAt(0)}
-                      {p.last_name.charAt(0)}
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-col flex-1 min-w-0">
-                  <span className="font-medium truncate text-gray-800">
-                    {p.first_name} {p.last_name}
-                  </span>
-                  <span className="text-[11px] text-gray-500 truncate">
-                    {p.gender || "—"},{" "}
-                    {p.date_of_birth
-                      ? new Date(p.date_of_birth).getFullYear()
-                      : ""}
-                  </span>
-                </div>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  className="opacity-0 group-hover:opacity-100 transition text-gray-400 hover:text-gray-600 p-1"
-                >
-                  •••
-                </button>
-              </li>
-            );
-          })}
+          filtered.map((p) => (
+            <SidebarPatientItem
+              key={p.id}
+              patient={p}
+              selected={p.id === selectedId}
+              onSelect={selectPatient}
+            />
+          ))}
         {!loading && !filtered.length && (
           <li className="px-4 py-4 text-xs text-gray-500">
             No patients found.
