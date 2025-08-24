@@ -33,7 +33,7 @@ function TopNavInner() {
                 className={
                   "px-5 py-2 rounded-full text-sm font-medium flex items-center gap-2 transition-colors " +
                   (active
-                    ? "bg-teal-400 text-gray-900 shadow-sm"
+                    ? "bg-accent-teal text-gray-900 shadow-sm"
                     : "text-gray-600 hover:bg-gray-100")
                 }
               >
