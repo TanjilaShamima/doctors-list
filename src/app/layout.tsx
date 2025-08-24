@@ -1,17 +1,16 @@
 import { TopNav } from "@/@components/layout/TopNav";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { t } from "@/lib/i18n";
 
-const geistSans = Geist({
+// Fallback font variables for when Google Fonts are not available
+const geistSans = {
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+};
 
-const geistMono = Geist_Mono({
+const geistMono = {
   variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+};
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -34,7 +33,7 @@ export default function RootLayout({
           </div>
           <div className="flex-1 pb-6">{children}</div>
           <footer className="p-4 text-center text-xs text-gray-500">
-            © {new Date().getFullYear()} Tech.Care
+            {t('footer.copyright', 'en', { year: new Date().getFullYear() })}
           </footer>
         </div>
       </body>

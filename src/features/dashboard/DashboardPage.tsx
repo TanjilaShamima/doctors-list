@@ -51,6 +51,7 @@ export default function DashboardPage() {
 
   console.log("parsed", parsed);
 
+  // Height tracking for responsive behavior 
   const [shortH, setShortH] = useState(false);
   useEffect(() => {
     const update = () => setShortH(window.innerHeight < 780);
@@ -58,6 +59,9 @@ export default function DashboardPage() {
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
+
+  // May be used for responsive adjustments in the future
+  console.log("Short height mode:", shortH);
 
 //   const asideHeightClass = shortH
 //     ? "h-[calc(100vh-120px)]"

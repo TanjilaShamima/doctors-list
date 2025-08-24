@@ -1,0 +1,57 @@
+{
+  "navigation": {
+    "home": "Overview",
+    "patients": "Patients"
+  },
+  "dashboard": {
+    "diagnosisHistoryTitle": "Diagnosis History",
+    "diagnosisHistoryDescription": "Blood pressure trends over the last 6 months. Values outside the normal range are highlighted.",
+    "lastMonthsLabel": "Last 6 months",
+    "bloodPressureLabel": "Blood Pressure",
+    "systolicLabel": "Systolic",
+    "diastolicLabel": "Diastolic"
+  },
+  "metrics": {
+    "respiratory": "Respiratory Rate",
+    "temperature": "Temperature",
+    "heart": "Heart Rate"
+  },
+  "profile": {
+    "dateOfBirth": "Date Of Birth",
+    "gender": "Gender",
+    "contact": "Contact Info.",
+    "emergency": "Emergency Contacts",
+    "insurance": "Insurance Provider",
+    "showAll": "Show All Information"
+  },
+  "sidebar": {
+    "patients": "Patients",
+    "searchPlaceholder": "Search patients...",
+    "loading": "Loading...",
+    "noPatients": "No patients found."
+  },
+  "aria": {
+    "openSearch": "Open search",
+    "closeSearch": "Close search",
+    "searchPatients": "Search patients"
+  },
+  "common": {
+    "search": "Search",
+    "close": "Close",
+    "loading": "Loading...",
+    "noData": "No data"
+  },
+  "vitals": {
+    "status": {
+      "normal": "Normal",
+      "high": "High", 
+      "low": "Low",
+      "higherThanAverage": "Higher than Average",
+      "lowerThanAverage": "Lower than Average",
+      "noData": "No data"
+    }
+  },
+  "footer": {
+    "copyright": "© {{year}} Tech.Care"
+  }
+}
