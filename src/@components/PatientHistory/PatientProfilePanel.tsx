@@ -4,9 +4,8 @@ import { usePatientStore } from "@/@stores/patientStore";
 import {
   Calendar,
   Phone,
-  PhoneCall,
   ShieldCheck,
-  UserRound,
+  Venus,
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -21,22 +20,22 @@ export function PatientProfilePanel() {
     return <div className="p-6 text-sm text-gray-500">Loading...</div>;
   const fullName = `${patient.name}`;
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex flex-col items-center p-6 pb-4">
+    <div className="flex flex-col h-auto px-5 py-5">
+      <div className="flex flex-col items-center pb-4">
         <div className="h-28 w-28 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-semibold text-gray-600">
           <Image
             src={patient.profile_picture || ""}
             alt={fullName}
-            width={112}
-            height={112}
+            width={120}
+            height={120}
             className="object-cover"
           />
         </div>
-        <h2 className="mt-4 text-lg font-semibold text-gray-800">{fullName}</h2>
+        <p className="mt-5 text-xl font-semibold text-gray-800">{fullName}</p>
       </div>
-      <div className="px-6 pb-6 space-y-4 text-sm">
+      <div className="pb-8 space-y-5 text-sm">
         <InfoRow
-          icon={<Calendar className="h-4 w-4" />}
+          icon={<Calendar className="h-5 w-5 text-brand-deep" />}
           label={PROFILE_LABELS.dateOfBirth}
           value={
             patient.date_of_birth
@@ -49,28 +48,28 @@ export function PatientProfilePanel() {
           }
         />
         <InfoRow
-          icon={<UserRound className="h-4 w-4" />}
+          icon={<Venus className="h-5 w-5 text-brand-deep" />}
           label={PROFILE_LABELS.gender}
           value={patient.gender || "—"}
         />
         <InfoRow
-          icon={<Phone className="h-4 w-4" />}
+          icon={<Phone className="h-5 w-5 text-brand-deep" />}
           label={PROFILE_LABELS.contact}
           value={patient.phone_number || "—"}
         />
         <InfoRow
-          icon={<PhoneCall className="h-4 w-4" />}
+          icon={<Phone className="h-5 w-5 text-brand-deep" />}
           label={PROFILE_LABELS.emergency}
           value={patient.emergency_contact || "—"}
         />
         <InfoRow
-          icon={<ShieldCheck className="h-4 w-4" />}
+          icon={<ShieldCheck className="h-5 w-5 text-brand-deep" />}
           label={PROFILE_LABELS.insurance}
           value={patient.insurance_type || "—"}
         />
       </div>
       <div className="px-6 pb-6 mt-auto">
-        <button className="w-full rounded-full bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium py-2 transition">
+        <button className="w-full rounded-full bg-accent-teal text-brand-deep text-sm font-medium py-2.5 transition cursor-pointer">
           {PROFILE_LABELS.showAll}
         </button>
       </div>
@@ -89,14 +88,14 @@ function InfoRow({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0 text-gray-500">
+      <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0 text-gray-500">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="text-[11px] uppercase tracking-wide text-gray-500 font-medium">
+        <div className="text-sm tracking-wide text-brand-deep font-normal">
           {label}
         </div>
-        <div className="text-gray-800 mt-0.5 truncate">{value}</div>
+        <div className="text-brand-deep font-bold mt-0.5 truncate">{value}</div>
       </div>
     </div>
   );

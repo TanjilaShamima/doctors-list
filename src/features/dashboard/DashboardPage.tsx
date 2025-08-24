@@ -2,7 +2,12 @@
 import Heart from "@/@assets/HeartBPM.png";
 import Respiratory from "@/@assets/respiratoryRate.png";
 import Temperature from "@/@assets/temperature.png";
+import { KPICard } from "@/@components/common/KPICard";
 import BloodPressureHistory from "@/@components/PatientHistory/BloodPressureHistory";
+import { DiagnosticList } from "@/@components/PatientHistory/DiagnosticList";
+import { LabResultsPanel } from "@/@components/PatientHistory/LabResultsPanel";
+import { PatientProfilePanel } from "@/@components/PatientHistory/PatientProfilePanel";
+import { SidebarPatientList } from "@/@components/SidebarPatient/SidebarPatientList";
 import { DASHBOARD_TEXT } from "@/@contents/dashboardText";
 import { usePatientStore } from "@/@stores/patientStore";
 import type { DiagnosisHistoryPoint } from "@/@types/patient";
@@ -12,12 +17,7 @@ import {
   parseDiagnosisHistory,
 } from "@/@utils/vitals";
 import Image from "next/image";
-import { useEffect, useMemo } from "react";
-import { SidebarPatientList } from "@/@components/SidebarPatient/SidebarPatientList";
-import { DiagnosticList } from "@/@components/PatientHistory/DiagnosticList";
-import { KPICard } from "@/@components/common/KPICard";
-import { LabResultsPanel } from "@/@components/PatientHistory/LabResultsPanel";
-import { PatientProfilePanel } from "@/@components/PatientHistory/PatientProfilePanel";
+import { useEffect, useMemo, useState } from "react";
 
 export default function DashboardPage() {
   const { selected, ensureSelected } = usePatientStore();
@@ -50,6 +50,18 @@ export default function DashboardPage() {
   );
 
   console.log("parsed", parsed);
+
+  const [shortH, setShortH] = useState(false);
+  useEffect(() => {
+    const update = () => setShortH(window.innerHeight < 780);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const asideHeightClass = shortH
+    ? "h-[calc(100vh-120px)]"
+    : "h-[calc(100vh-160px)]"; // matches left sidebar baseline
 
   return (
     <div
@@ -100,12 +112,17 @@ export default function DashboardPage() {
           <DiagnosticList />
         </div>
       </main>
-      <aside className="hidden xl:flex flex-col gap-6 xl:gap-8">
-        <div className="rounded-2xl border border-gray-200 bg-white shadow-sm h-[520px] overflow-hidden">
+      <aside
+        className={`hidden xl:flex flex-col gap-6 xl:gap-8 sticky top-28 ${asideHeightClass}`}
+      >
+        <div className="rounded-2xl border border-gray-200 bg-white shadow-sm flex-none overflow-hidden max-h-auto">
           <PatientProfilePanel />
         </div>
-        <div className="rounded-2xl border border-gray-200 bg-white shadow-sm h-[360px] overflow-hidden">
-          <LabResultsPanel />
+        <div className="rounded-2xl border border-gray-200 bg-white shadow-sm flex-1 h-[450px] overflow-hidden">
+          {/* Internal scroll only for lab results list */}
+          <div className="h-full flex flex-col">
+            <LabResultsPanel />
+          </div>
         </div>
       </aside>
     </div>

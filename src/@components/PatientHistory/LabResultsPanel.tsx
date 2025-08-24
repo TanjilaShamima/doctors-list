@@ -13,10 +13,12 @@ export function LabResultsPanel() {
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 pb-2 font-semibold text-gray-800 text-sm">
-        Lab Results
+        <h2 className="text-base md:text-2xl font-semibold tracking-tight text-brand-deep">
+          Lab Results
+        </h2>
       </div>
       {(!selected || !labs.length) && (
-        <div className="px-4 py-6 text-xs text-gray-500">
+        <div className="px-4 py-6 text-xs text-brand-deep">
           No lab results available.
         </div>
       )}
@@ -27,7 +29,7 @@ export function LabResultsPanel() {
               key={index}
               className="flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50"
             >
-              <span className="truncate text-gray-700 flex items-center gap-2">
+              <span className="truncate text-brand-deep flex items-center gap-2">
                 {lab}
               </span>
 
