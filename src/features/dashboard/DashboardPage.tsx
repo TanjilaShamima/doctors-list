@@ -113,7 +113,7 @@ export default function DashboardPage() {
         </div>
       </main>
       <aside
-        className={`hidden xl:flex flex-col gap-6 xl:gap-8 sticky top-28 ${asideHeightClass}`}
+        className={`hidden xl:flex flex-col gap-6 xl:gap-8 sticky top-28`}
       >
         <div className="rounded-2xl border border-gray-200 bg-white shadow-sm flex-none overflow-hidden max-h-auto">
           <PatientProfilePanel />

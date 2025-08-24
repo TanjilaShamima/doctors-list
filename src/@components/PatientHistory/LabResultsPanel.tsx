@@ -11,8 +11,8 @@ export function LabResultsPanel() {
   );
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="p-4 pb-2 font-semibold text-gray-800 text-sm">
+    <div className="flex flex-col h-full px-5 py-8">
+      <div className="pb-4 font-semibold text-gray-800 text-sm">
         <h2 className="text-base md:text-2xl font-semibold tracking-tight text-brand-deep">
           Lab Results
         </h2>
@@ -27,7 +27,7 @@ export function LabResultsPanel() {
           {labs.map((lab, index) => (
             <li
               key={index}
-              className="flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50"
+              className="flex items-center justify-between px-4 py-2.5 text-sm hover:bg-gray-50"
             >
               <span className="truncate text-brand-deep flex items-center gap-2">
                 {lab}
