@@ -34,7 +34,7 @@ export default function RootLayout({
           <Header>
             <TopNav />
           </Header>
-          <div className="flex-1 pb-6">{children}</div>
+          <div className="flex-1 pb-1">{children}</div>
           <Footer />
         </div>
       </body>
