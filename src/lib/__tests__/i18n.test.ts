@@ -1,4 +1,4 @@
-import { t, getCurrentLocale } from '../i18n';
+import { t, getCurrentLocale, type FlattenedKeys } from '../i18n';
 
 describe('i18n', () => {
   describe('t function', () => {
@@ -8,7 +8,7 @@ describe('i18n', () => {
     });
 
     it('returns key for invalid translation', () => {
-      expect(t('invalid.key' as any)).toBe('invalid.key');
+      expect(t('invalid.key' as FlattenedKeys)).toBe('invalid.key');
     });
 
     it('handles parameter interpolation', () => {
