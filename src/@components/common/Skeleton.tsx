@@ -10,23 +10,14 @@ export function Skeleton({ className = "", children }: SkeletonProps) {
   return (
     <div
       className={`relative overflow-hidden rounded-md bg-gray-200/80 ${className}`}
+      aria-hidden="true"
+      role="presentation"
     >
       <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.6s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
-      <div className="opacity-0">{children}</div>
+      {/* Reserve layout space when children passed */}
+      {children && <div className="opacity-0">{children}</div>}
     </div>
   );
-}
-
-// Add keyframes (can be moved to global css if desired)
-// Using inline style tag export for convenience when Tailwind not configured with custom keyframes
-if (
-  typeof document !== "undefined" &&
-  !document.getElementById("skeleton-shimmer-style")
-) {
-  const style = document.createElement("style");
-  style.id = "skeleton-shimmer-style";
-  style.innerHTML = `@keyframes shimmer {100% {transform: translateX(100%);}}`;
-  document.head.appendChild(style);
 }
 
 interface LinesProps {
