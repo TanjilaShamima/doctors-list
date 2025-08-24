@@ -1,28 +1,63 @@
 import type { DiagnosisHistoryPoint } from "@/@types/patient";
 import type { BloodPressureSummary, ParsedPoint, VitalStatuses } from "@/@types/vitals";
 
+// Helper to coerce possible string/number into number
+function toNum(val: unknown): number | null {
+    if (val == null) return null;
+    if (typeof val === 'number' && isFinite(val)) return val;
+    if (typeof val === 'string') {
+        const n = parseFloat(val);
+        return isFinite(n) ? n : null;
+    }
+    return null;
+}
+
 export function parseDiagnosisHistory(history: DiagnosisHistoryPoint[] = []): ParsedPoint[] {
     const parsed: ParsedPoint[] = history
         .map((pt) => {
-            const raw = (pt.month || "").replace(/,/g, " ").trim();
-            let dt = new Date(raw);
-            if (isNaN(dt.getTime())) {
-                dt = new Date(raw + " 1");
+            // Month + Year combination (e.g. "Oct" + "2023")
+            const monthPart = (pt.month || '').trim();
+            const yearPart = (pt.year || '').trim();
+            const dateString = [monthPart, yearPart].filter(Boolean).join(' '); // e.g. "Oct 2023"
+            let dt = new Date(dateString);
+            if (isNaN(dt.getTime()) && dateString) {
+                // Try adding day if only month-year fails
+                dt = new Date(dateString + ' 1');
             }
-            if (isNaN(dt.getTime())) dt = new Date();
-            const label = dt.toLocaleDateString(undefined, { month: "short", year: "numeric" });
-            return {
-                label,
-                date: dt,
-                sys: typeof pt.systolic === "number" ? pt.systolic : null,
-                dia: typeof pt.diastolic === "number" ? pt.diastolic : null,
-                respiratory: typeof pt.respiratory_rate === "number" ? pt.respiratory_rate : null,
-                temperature: typeof pt.temperature === "number" ? pt.temperature : null,
-                heart: typeof pt.heart_rate === "number" ? pt.heart_rate : null,
-            } as ParsedPoint;
+            if (isNaN(dt.getTime())) {
+                dt = new Date(); // fallback to now
+            }
+            const label = dt.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+
+            // Support two possible shapes:
+            // Old (flat): pt.systolic, pt.diastolic, pt.respiratory_rate (number), etc.
+            // New (nested VitalSign): pt.blood_pressure.systolic.value, pt.respiratory_rate.value, etc.
+            // Access possibly dual-shaped properties safely
+            type VitalLike = { value?: number | string } | number | string | undefined;
+            const flatSys: VitalLike = (pt as unknown as { systolic?: VitalLike }).systolic;
+            const flatDia: VitalLike = (pt as unknown as { diastolic?: VitalLike }).diastolic;
+            const flatResp: VitalLike = (pt as unknown as { respiratory_rate?: VitalLike }).respiratory_rate;
+            const flatTemp: VitalLike = (pt as unknown as { temperature?: VitalLike }).temperature;
+            const flatHeart: VitalLike = (pt as unknown as { heart_rate?: VitalLike }).heart_rate;
+
+            const extract = (v: VitalLike): number | string | undefined => {
+                if (v && typeof v === 'object' && 'value' in v) {
+                    const obj = v as { value?: number | string };
+                    return obj.value;
+                }
+                return v as number | string | undefined;
+            };
+            const sys = toNum(extract(flatSys)) ?? toNum(pt.blood_pressure?.systolic?.value);
+            const dia = toNum(extract(flatDia)) ?? toNum(pt.blood_pressure?.diastolic?.value);
+            const respiratory = toNum(extract(flatResp));
+            const temperature = toNum(extract(flatTemp));
+            const heart = toNum(extract(flatHeart));
+
+            return { label, date: dt, sys, dia, respiratory, temperature, heart } as ParsedPoint;
         })
         .sort((a, b) => a.date.getTime() - b.date.getTime());
 
+    // Deduplicate by label, keeping the last chronologically
     const lastByLabel = new Map<string, ParsedPoint>();
     parsed.forEach((p) => lastByLabel.set(p.label, p));
     return Array.from(lastByLabel.values());
