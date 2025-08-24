@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
         <div className="mx-auto max-w-[1500px] flex flex-col min-h-screen px-3 md:px-6 py-3 gap-4">
           <div className="sticky top-3 z-20">
