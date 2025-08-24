@@ -17,9 +17,14 @@
   
   /* Chart / vitals accent colors */
   --color-bp-systolic: #E66FD2;
-  --color-bp-diastolic: #5B8DEF;
+  --color-bp-diastolic: #8C6FE6;
   --color-light-gray: #F6F7F8;
   --color-accent-teal: #01F0D0;
+  
+  /* KPI card backgrounds */
+  --color-kpi-respiratory: #E0F3FA;
+  --color-kpi-temperature: #FFE6E9;
+  --color-kpi-heart: #FFE6F1;
   
   /* Typography scale */
   --font-size-xs: 0.75rem;
@@ -54,6 +59,11 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
+}
+
+/* Custom grid layout for dashboard */
+.dashboard-grid {
+  grid-template-columns: 280px 1fr 300px;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -1,7 +1,10 @@
 {
   "navigation": {
     "home": "Overview",
-    "patients": "Patients"
+    "patients": "Patients",
+    "schedule": "Schedule",
+    "message": "Message",
+    "transactions": "Transactions"
   },
   "dashboard": {
     "diagnosisHistoryTitle": "Diagnosis History",
@@ -30,10 +33,16 @@
     "loading": "Loading...",
     "noPatients": "No patients found."
   },
+  "doctor": {
+    "name": "Dr. Jose Simmons",
+    "title": "General Practitioner"
+  },
   "aria": {
     "openSearch": "Open search",
     "closeSearch": "Close search",
-    "searchPatients": "Search patients"
+    "searchPatients": "Search patients",
+    "settings": "Settings",
+    "more": "More options"
   },
   "common": {
     "search": "Search",

@@ -8,7 +8,7 @@ type NestedTranslationKeys<T> = T extends object
     }[keyof T]
   : never;
 
-type FlattenedKeys = NestedTranslationKeys<typeof commonEn>;
+export type FlattenedKeys = NestedTranslationKeys<typeof commonEn>;
 
 const translations = {
   en: commonEn,

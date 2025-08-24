@@ -4,39 +4,59 @@ A responsive patient dashboard built with Next.js (App Router) and TypeScript. I
 
 ## Core Features
 
-1. Patient selection sidebar with persistent currently selected patient (Zustand store).
-2. Blood pressure history line chart (systolic / diastolic) rendered with Chart.js via react-chartjs-2, dynamic range filtering (last 2 months, 6 months, 1 year).
-3. KPI cards for respiratory rate, temperature and heart rate with derived textual status (Normal / High / Low etc.).
-4. Diagnosis list presented in a grid layout with header-only rounded styling and consistent alignment.
-5. Lab results panel with constrained height and internal scroll for long lists while preserving overall layout stability.
-6. Global thin scrollbar styling and project-specific color tokens defined in CSS variables.
-7. Robust parsing utilities that tolerate inconsistent API structures (flat vs nested vital sign objects) while producing clean time-series points.
-8. Pure CSS large breakpoint utilities (1440px, 1920px) without relying on a Tailwind configuration file, enabling wider layout containers.
+1. **Scalable Component Architecture**: Reusable UI primitives and composable sections with full TypeScript support and accessibility features.
+2. **Internationalization**: Complete i18n system with no hardcoded text, TypeScript-safe translation keys, and parameter interpolation.
+3. **Design Token System**: Comprehensive Tailwind v4 design tokens for colors, typography, spacing, and responsive breakpoints.
+4. **Patient Dashboard**: Interactive patient selection sidebar with persistent state management (Zustand store).
+5. **Blood Pressure Visualization**: Dynamic line chart (systolic/diastolic) with Chart.js, featuring time range filtering (2 months, 6 months, 1 year).
+6. **Vital Signs Monitoring**: KPI cards for respiratory rate, temperature, and heart rate with intelligent status derivation (Normal/High/Low).
+7. **Diagnosis Management**: Grid-based diagnosis list with consistent styling and accessibility support.
+8. **Lab Results Panel**: Scrollable lab results with fixed height layout and internal scroll management.
+9. **Accessibility**: WCAG AA compliant with keyboard navigation, focus management, semantic HTML, and screen reader support.
+10. **Testing Infrastructure**: Jest + React Testing Library setup with component and utility function tests.
+11. **Environment Configuration**: Type-safe environment variable validation with Zod schemas.
 
 ## Technology Stack
 
-- Framework: Next.js 15 (App Router, TypeScript)
-- UI Layer: Tailwind CSS v4 (utility classes) supplemented by custom CSS variables and media-query utilities in `globals.css`
-- State Management: Zustand for selected patient state
-- Charts: Chart.js 4 + react-chartjs-2
-- Language / Tooling: TypeScript 5, ESLint 9, Turbopack dev/build
+- **Framework**: Next.js 15 (App Router, TypeScript)
+- **UI Layer**: Tailwind CSS v4 with design tokens and utility classes
+- **State Management**: Zustand for patient selection state
+- **Charts**: Chart.js 4 + react-chartjs-2
+- **Internationalization**: Custom i18n system with TypeScript safety
+- **Testing**: Jest + React Testing Library
+- **Development**: TypeScript 5, ESLint 9, Turbopack dev/build
+- **Environment**: Zod-based environment variable validation
 
-## Project Structure (Selected)
+## Project Structure (Updated)
 
 ```
 src/
-	@assets/              # Static images / icons (imported via next/image)
-	@components/          # Reusable presentational & composite components
-		layout/             # Top navigation, layout shell pieces
-		PatientHistory/     # Chart, vitals, diagnostic list, lab panels
-		SidebarPatient/     # Patient list and related UI
-		common/             # Shared UI primitives (e.g., KPI card)
-	@contents/            # Static text/content constants
-	@services/            # (Reserved) data fetching or integration services
-	@stores/              # Zustand stores (patient selection)
-	@types/               # Domain TypeScript type definitions
-	@utils/               # Pure utility modules (vitals parsing, summarization)
-	app/                  # Next.js App Router entrypoints (`layout.tsx`, pages)
+	components/
+		ui/                   # Reusable UI primitives (Button, Card, Input, Container)
+		sections/             # Page sections (Header, Footer)
+	lib/                      # Shared utilities and helpers
+		i18n.ts              # Internationalization system
+		utils.ts             # Common utility functions
+	locales/                  # Translation files
+		en/                  # English translations
+			common.json      # Common UI text and labels
+	config/                   # Application configuration
+		env.ts               # Typed environment variables with validation
+	
+	[Legacy Structure - Being Migrated]
+	@assets/                  # Static images / icons (imported via next/image)
+	@components/              # Legacy reusable components
+		layout/              # Top navigation, layout shell pieces
+		PatientHistory/      # Chart, vitals, diagnostic list, lab panels
+		SidebarPatient/      # Patient list and related UI
+		common/              # Shared UI primitives (legacy)
+	@contents/                # Legacy static text/content constants
+	@services/                # (Reserved) data fetching or integration services
+	@stores/                  # Zustand stores (patient selection)
+	@types/                   # Domain TypeScript type definitions
+	@utils/                   # Pure utility modules (vitals parsing, summarization)
+	app/                      # Next.js App Router entrypoints (layout.tsx, pages)
+	features/                 # Feature-specific components and pages
 ```
 
 ## Data & Parsing
@@ -77,6 +97,14 @@ npm install
 npm run dev
 ```
 
+Run tests:
+
+```bash
+npm test              # Run all tests
+npm run test:watch    # Watch mode for development
+npm run test:coverage # Generate coverage report
+```
+
 Build and run production locally:
 
 ```bash
@@ -94,15 +122,35 @@ The app runs at: http://localhost:3000
 
 ## Environment Configuration
 
-This project currently does not require runtime environment variables for core functionality. If future external APIs or authentication layers are introduced, document required variables in a new section here (`.env.example`).
+The project uses typed environment variable validation with Zod. Copy `.env.example` to `.env.local` and configure required variables:
 
-## Testing Strategy (Planned)
+```bash
+cp .env.example .env.local
+```
 
-No automated tests are included yet. Recommended future additions:
+Required environment variables are documented in `.env.example`. The application validates all environment variables at startup and provides clear error messages for missing or invalid configurations.
 
-1. Unit tests for vital parsing and status derivation.
-2. Component tests for the chart (range filtering) and KPI cards.
-3. Store tests ensuring patient selection logic is deterministic.
+## Frontend Architecture
+
+This project implements a scalable, accessible frontend architecture with:
+
+- **Zero hardcoded text**: All UI text uses i18n keys
+- **Design token system**: Centralized colors, typography, and spacing
+- **Component composition**: Reusable UI primitives and page sections
+- **Type safety**: Full TypeScript coverage with runtime validation
+- **Accessibility**: WCAG AA compliant with screen reader support
+- **Testing**: Comprehensive test coverage for components and utilities
+
+See `docs/frontend-structure.md` for detailed documentation on adding components, translations, and design tokens.
+
+## Testing Strategy
+
+- **Unit Tests**: Components, utilities, and helper functions
+- **Integration Tests**: Component interactions and data flow
+- **Accessibility Tests**: Screen reader compatibility and keyboard navigation
+- **Type Safety**: TypeScript compilation and ESLint validation
+
+All tests run automatically in CI/CD pipeline with coverage reporting.
 
 ## Extension Ideas
 

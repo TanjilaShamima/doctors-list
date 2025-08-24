@@ -1,7 +1,7 @@
 import { TopNav } from "@/@components/layout/TopNav";
 import type { Metadata } from "next";
 import "./globals.css";
-import { t } from "@/lib/i18n";
+import { Header, Footer } from "@/components/sections";
 
 // Fallback font variables for when Google Fonts are not available
 const geistSans = {
@@ -28,13 +28,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
         <div className="mx-auto max-w-[1568px] flex flex-col min-h-screen px-3 md:px-6 py-3 gap-4">
-          <div className="sticky top-3 z-20">
+          <Header>
             <TopNav />
-          </div>
+          </Header>
           <div className="flex-1 pb-6">{children}</div>
-          <footer className="p-4 text-center text-xs text-gray-500">
-            {t('footer.copyright', 'en', { year: new Date().getFullYear() })}
-          </footer>
+          <Footer />
         </div>
       </body>
     </html>
