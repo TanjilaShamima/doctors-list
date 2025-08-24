@@ -45,9 +45,9 @@ export function DiagnosticList() {
             )}
             {initialized &&
               !loading &&
-              diagnosticList.map((item) => (
+              diagnosticList?.map((item, index) => (
                 <div
-                  key={item.name}
+                  key={index}
                   className="grid grid-cols-[30%_50%_20%] px-4 py-4 hover:bg-gray-50"
                 >
                   <div className="flex items-center gap-2 font-normal text-brand-deep">
