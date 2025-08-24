@@ -1,5 +1,5 @@
 import { DASHBOARD_TEXT } from "@/@contents/dashboardText";
-import { cn } from "@/@utils/utils";
+import { cn } from "@/@utils/cn";
 
 
 interface FooterProps extends React.HTMLAttributes<HTMLElement> {
