@@ -11,7 +11,7 @@ export function Header({ children, sticky = true, className, ...props }: HeaderP
     <header 
       className={cn(
         "bg-white border border-gray-200 rounded-full shadow-sm",
-        sticky && "sticky top-3 z-20",
+        sticky && "sticky top-5 z-20",
         className
       )}
       {...props}
