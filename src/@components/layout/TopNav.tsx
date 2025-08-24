@@ -1,13 +1,13 @@
 "use client";
 import Logo from "@/@assets/logo.svg";
+import more from "@/@assets/more.png";
 import ProfileImage from "@/@assets/profile-placeholder.png";
+import setting from "@/@assets/setting.png";
 import { NAV_ITEMS, NavItem } from "@/@contents/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import setting from '@/@assets/setting.png';
-import more from '@/@assets/more.png';
 
 // Items provided via @contents/navigation
 
@@ -71,13 +71,7 @@ export function TopNav() {
           className="h-10 w-auto rounded-full object-cover"
         />
       </div>
-      <Suspense
-        fallback={
-          <div className="text-xs text-gray-500 ml-auto mr-auto">
-            Loading nav…
-          </div>
-        }
-      >
+      <Suspense fallback={null}>
         <TopNavInner />
       </Suspense>
       <div className="flex items-center gap-4 ml-auto">
@@ -102,23 +96,13 @@ export function TopNav() {
           aria-label="Settings"
           className="flex items-center justify-center text-gray-600"
         >
-          <Image
-            src={setting}
-            alt="Settings"
-            width={20}
-            height={20}
-          />
+          <Image src={setting} alt="Settings" width={20} height={20} />
         </button>
         <button
           aria-label="More"
           className="flex items-center justify-center text-brand-deep"
         >
-          <Image
-            src={more}
-            alt="More"
-            width={3}
-            height={20}
-          />
+          <Image src={more} alt="More" width={3} height={20} />
         </button>
       </div>
     </nav>

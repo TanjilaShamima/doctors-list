@@ -11,15 +11,16 @@ export const usePatientStore = create<PatientState>((set, get) => ({
         try {
             set({ loading: true, error: undefined });
             const list = await fetchAllPatients();
-            set({ patients: list, loading: false, initialized: true });
+            set({ patients: list, initialized: true });
             // If nothing selected yet, default to Jessica
             const jess = list.find(p => `${p.name}`.toLowerCase() === 'jessica taylor');
             if (!get().selectedId && jess) {
                 set({ selectedId: jess.id, selected: jess });
             }
+            set({ loading: false });
         } catch (e) {
             const msg = e instanceof Error ? e.message : 'Failed to load patients';
-            set({ error: msg, loading: false });
+            set({ error: msg, loading: false, initialized: true });
         }
     },
     selectPatient(id) {
@@ -28,14 +29,22 @@ export const usePatientStore = create<PatientState>((set, get) => ({
         if (found) set({ selectedId: id, selected: found });
     },
     async ensureSelected() {
-        const { selected, selectedId } = get();
-        if (selected) return; // already loaded via patients list
-        if (selectedId) {
-            const p = await fetchPatientByIdOrName(selectedId);
-            if (p) set({ selected: p });
-            return;
+        const { selected, selectedId, loading } = get();
+        if (selected || loading) return; // avoid duplicate
+        try {
+            set({ loading: true, error: undefined });
+            if (selectedId) {
+                const p = await fetchPatientByIdOrName(selectedId);
+                if (p) set({ selected: p });
+                set({ loading: false });
+                return;
+            }
+            const j = await fetchJessica();
+            if (j) set({ selected: j, selectedId: j.id });
+            set({ loading: false });
+        } catch (e) {
+            const msg = e instanceof Error ? e.message : 'Failed to load patient';
+            set({ error: msg, loading: false, initialized: true });
         }
-        const j = await fetchJessica();
-        if (j) set({ selected: j, selectedId: j.id });
     }
 }));

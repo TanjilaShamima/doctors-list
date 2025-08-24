@@ -1,14 +1,22 @@
 "use client";
+import search from "@/@assets/search.png";
+import { Skeleton } from "@/@components/common/Skeleton";
 import { usePatientStore } from "@/@stores/patientStore";
 import { Search, X } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SidebarPatientItem } from "./SidebarPatientItem";
-import search from '@/@assets/search.png';
-import Image from "next/image";
 
 export function SidebarPatientList() {
-  const { patients, loadPatients, loading, selectedId, selectPatient, error } =
-    usePatientStore();
+  const {
+    patients,
+    loadPatients,
+    loading,
+    initialized,
+    selectedId,
+    selectPatient,
+    error,
+  } = usePatientStore();
   const [query, setQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -28,15 +36,19 @@ export function SidebarPatientList() {
   const filtered = useMemo(() => {
     if (!query) return patients;
     const q = query.toLowerCase();
-    return patients.filter((p) =>
-      `${p.name}`.toLowerCase().includes(q)
-    );
+    return patients.filter((p) => `${p.name}`.toLowerCase().includes(q));
   }, [patients, query]);
 
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between px-5 pt-5 pb-4">
-        <div className="font-extrabold text-brand-deep select-none text-2xl">Patients</div>
+        <div className="font-extrabold text-brand-deep select-none text-2xl">
+          {(!initialized || loading) && !patients.length ? (
+            <Skeleton className="h-7 w-32 rounded" />
+          ) : (
+            "Patients"
+          )}
+        </div>
         <button
           aria-label={showSearch ? "Close search" : "Open search"}
           className="h-8 w-8 flex items-center justify-center rounded-md transition cursor-pointer"
@@ -45,12 +57,7 @@ export function SidebarPatientList() {
           {showSearch ? (
             <X className="h-4 w-4" />
           ) : (
-            <Image
-              src={search}
-              alt="Search"
-              width={18}
-              height={18}
-            />
+            <Image src={search} alt="Search" width={18} height={18} />
           )}
         </button>
       </div>
@@ -70,10 +77,23 @@ export function SidebarPatientList() {
       )}
       {error && <div className="px-4 text-xs text-red-600 pb-2">{error}</div>}
       <ul className="flex-1 overflow-y-auto thin-scroll pr-1 space-y-1 pt-4">
-        {loading && (
-          <li className="px-4 py-2 text-xs text-gray-500">Loading...</li>
+        {(loading || !initialized) && !patients.length && (
+          <>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <li key={i} className="px-4 py-2">
+                <div className="flex items-center gap-3">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-3 w-3/4" />
+                    <Skeleton className="h-3 w-1/2" />
+                  </div>
+                </div>
+              </li>
+            ))}
+          </>
         )}
         {!loading &&
+          initialized &&
           filtered.map((p) => (
             <SidebarPatientItem
               key={p.id}
@@ -82,7 +102,7 @@ export function SidebarPatientList() {
               onSelect={selectPatient}
             />
           ))}
-        {!loading && !filtered.length && (
+        {!loading && initialized && !filtered.length && (
           <li className="px-4 py-4 text-xs text-gray-500">
             No patients found.
           </li>
