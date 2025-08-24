@@ -94,13 +94,13 @@ export function TopNav() {
         </div>
         <button
           aria-label="Settings"
-          className="flex items-center justify-center text-gray-600"
+          className="flex items-center justify-center text-brand-deep cursor-pointer"
         >
           <Image src={setting} alt="Settings" width={20} height={20} />
         </button>
         <button
           aria-label="More"
-          className="flex items-center justify-center text-brand-deep"
+          className="flex items-center justify-center text-brand-deep cursor-pointer"
         >
           <Image src={more} alt="More" width={3} height={20} />
         </button>
